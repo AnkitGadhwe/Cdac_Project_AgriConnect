@@ -1,0 +1,16 @@
+YourApiName/
+|-- Controllers/
+|   |-- TodosController.cs
+|-- Models/
+|   |-- Todo.cs
+|-- Data/
+|   |-- AppDbContext.cs
+|-- obj/
+|-- bin/
+|-- wwwroot/
+|-- Properties/
+|-- appsettings.json
+|-- YourApiName.csproj
+|-- launchSettings.json
+|-- Program.cs
+|-- Startup.cs
