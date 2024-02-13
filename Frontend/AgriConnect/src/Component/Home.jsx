@@ -51,6 +51,10 @@ const Home = () => {
             <h5>24/7 Support</h5>
           </div>
         </section>
+        <section id={style.sectionBanner}>
+          <div></div>
+          <div></div>
+        </section>
       </div>
     </div>
   );

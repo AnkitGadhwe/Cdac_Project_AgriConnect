@@ -10,6 +10,7 @@ import PumpSpray from "../PumpSpray";
 import PlantCare from "../PlantCare";
 import AboutUs from "../AboutUs";
 import Contact from "../Contact";
+import PlantsDetails from "../PlantDetails";
 import PageNotFound from "../PageNotFound";
 
 const AllRoutes = () => {
@@ -25,6 +26,7 @@ const AllRoutes = () => {
       <Route path="/plantcare" element={<PlantCare />} />
       <Route path="/aboutus" element={<AboutUs />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/plantsdetails/:pid" element={<PlantsDetails />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

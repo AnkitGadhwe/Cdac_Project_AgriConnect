@@ -1,0 +1,29 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+*{
+  font-family: 'Roboto', sans-serif;
+} 
+
+#contactPoster{
+ background-image: url('https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTLEQfFJYTZF318mtY_YTbQPcPnK0m6GIvtCz0FtTwkvQR-ZC4z');
+ background-repeat: no-repeat;
+ height:400px;
+ width: 80%;
+ background-size: 100% 100%; 
+ margin: auto;
+ margin-top: 20px;
+ border-radius: 10px;
+}
+#contactPoster h1{
+  color:ghostwhite;
+  text-align: center;
+  padding-top: 125px;
+}
+#contactPoster h4{
+  color:white;
+  text-align: center;
+   width: 80%;
+   padding-left: 267px;
+   margin-top: 5px;
+   
+}
