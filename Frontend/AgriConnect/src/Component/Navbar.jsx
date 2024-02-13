@@ -4,6 +4,7 @@ import { FaSearch } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
+
 import Imagelogo from "../Images/Imagelogo.png";
 
 const Navbar = () => {

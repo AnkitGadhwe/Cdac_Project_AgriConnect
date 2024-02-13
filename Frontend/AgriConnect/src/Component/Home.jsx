@@ -1,14 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Slideshow from "./Slideshow";
 import style from "../CSS/Home.module.css";
 import f1 from "../Images/Feature/f1.png";
 import f2 from "../Images/Feature/f2.png";
-import f3 from "../Images/Feature/f3.png";
-import f4 from "../Images/Feature/f4.png";
-import f5 from "../Images/Feature/f5.png";
 import f6 from "../Images/Feature/f6.png";
 
+import { NavLink } from "react-router-dom";
+import { FaCartPlus } from "react-icons/fa";
+
 const Home = () => {
+  let [data, setData] = useState([]);
+
+  const getAllData = async () => {
+    let res = await fetch("http://localhost:8080/plants/load?offset=3&limit=5");
+    let response = await res.json();
+    setData(response);
+    console.log(response);
+  };
+
+  useEffect(() => {
+    getAllData();
+  }, []);
+
   return (
     <div style={{ marginTop: "0px" }}>
       <Slideshow />
@@ -52,8 +65,73 @@ const Home = () => {
           </div>
         </section>
         <section id={style.sectionBanner}>
-          <div></div>
-          <div></div>
+          <div
+            style={{ display: "flex", gap: "10px", flexDirection: "column" }}
+          >
+            <NavLink to="/plantfood">
+              {" "}
+              <button className={style.PlantFoodPoster}>
+                {/* <h1>Plant Food</h1>
+                <p>
+                  Choose from a wide range of organic, chemical fertilizers and
+                  other growing media
+                </p> */}
+              </button>
+            </NavLink>
+            <NavLink to="/plantfood">
+              {" "}
+              <button className={style.PlantFoodPoster}>
+                {/* <h1>Plant Food</h1>
+                <p>
+                  Choose from a wide range of organic, chemical fertilizers and
+                  other growing media
+                </p> */}
+              </button>
+            </NavLink>
+          </div>
+          <div
+            style={{ display: "flex", gap: "20px", flexDirection: "column" }}
+          >
+            <NavLink to="/pebbles">
+              <button className={style.PlantFoodPoster2}></button>
+            </NavLink>
+            <NavLink to="/potplants">
+              {" "}
+              <button className={style.PlantFoodPoster3}></button>
+            </NavLink>
+            <NavLink to="/pumpspray">
+              {" "}
+              <button className={style.PlantFoodPoster4}></button>
+            </NavLink>
+          </div>
+        </section>
+        <section id={style.featureCollection}>
+          <h1>Featured collection</h1>
+          <div className={style.featureCollectionChild}>
+            {data.map((ele, ind) => {
+              const images = JSON.parse(ele.pimages);
+              const Price = JSON.parse(ele.pprice);
+              return (
+                <div className={style.PlantCard}>
+                  <img src={images[0].IMG1} alt="error" />
+                  <h5>Rs. {Price[0].MP}</h5>
+                  <h3>Rs. {Price[0].SP}</h3>
+                  <p>{ele.ptitle}</p>
+                  <div className={style.ButtonBox}>
+                    <NavLink to={`/plantsdetails/${ele.pid}`}>
+                      <button className={style.QuickShop}>Quick Shop</button>
+                    </NavLink>
+                    <button className={style.CartButton}>
+                      <FaCartPlus />
+                    </button>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+          <NavLink to="/plant">
+            <button className={style.ViewAllButton}>View All</button>
+          </NavLink>
         </section>
       </div>
     </div>
