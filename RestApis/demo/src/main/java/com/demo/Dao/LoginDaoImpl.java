@@ -107,6 +107,5 @@ public class LoginDaoImpl implements LoginDao {
 		jdbcCall.execute(inParams1);
 		
 	}
- 
     
 }

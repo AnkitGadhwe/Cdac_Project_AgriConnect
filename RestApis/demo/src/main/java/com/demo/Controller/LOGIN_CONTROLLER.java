@@ -42,10 +42,13 @@ public class LOGIN_CONTROLLER {
 	
 	@GetMapping("/Forgot_Password")
 	public ResponseEntity <String> Forgot_password(@RequestParam String Phone, @RequestParam String UserID, HttpServletRequest request, HttpServletResponse response){
+		
 		String otp = lservice.getOtpForgotPassword(Phone,UserID);
 		HttpSession session = request.getSession();
 		session.setAttribute("UserID_ForgotP", UserID);
 		return ResponseEntity.ok(otp);
+		
+		
 	}
 	
 	@GetMapping("/Verify_Otp")

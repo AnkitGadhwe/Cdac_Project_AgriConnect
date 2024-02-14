@@ -16,4 +16,6 @@ public interface LoginDao {
 
 	void savelogin(String useriD);
 
+	
+
 }
