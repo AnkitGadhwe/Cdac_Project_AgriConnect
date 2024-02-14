@@ -80,7 +80,7 @@ const Home = () => {
             </NavLink>
             <NavLink to="/plantfood">
               {" "}
-              <button className={style.PlantFoodPoster}>
+              <button className={style.PlantFoodPoster5}>
                 {/* <h1>Plant Food</h1>
                 <p>
                   Choose from a wide range of organic, chemical fertilizers and
@@ -89,9 +89,7 @@ const Home = () => {
               </button>
             </NavLink>
           </div>
-          <div
-            style={{ display: "flex", gap: "20px", flexDirection: "column" }}
-          >
+          <div style={{ display: "flex", gap: "5px", flexDirection: "column" }}>
             <NavLink to="/pebbles">
               <button className={style.PlantFoodPoster2}></button>
             </NavLink>
@@ -121,6 +119,7 @@ const Home = () => {
                     <NavLink to={`/plantsdetails/${ele.pid}`}>
                       <button className={style.QuickShop}>Quick Shop</button>
                     </NavLink>
+
                     <button className={style.CartButton}>
                       <FaCartPlus />
                     </button>

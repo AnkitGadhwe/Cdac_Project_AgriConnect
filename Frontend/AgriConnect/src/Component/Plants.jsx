@@ -5,15 +5,25 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link, NavLink } from "react-router-dom";
 import { GoListUnordered } from "react-icons/go";
 import { MdOutlineGridView } from "react-icons/md";
-import { Icon } from "@chakra-ui/react";
-import { FaCartShopping } from "react-icons/fa6";
+import Slider from "react-slider";
+import {
+  RangeSlider,
+  RangeSliderTrack,
+  RangeSliderFilledTrack,
+  RangeSliderThumb,
+} from "@chakra-ui/react";
+import Pagination from "../Component/Pagination";
 
+const MIN = 1000;
+const MAX = 20000;
 const Plants = () => {
   let [data, setData] = useState([]);
+  let [page, setPage] = useState(1);
+  let [price, setPrice] = useState([MIN, MAX]);
 
-  const getAllData = async () => {
+  const getAllData = async (pageno) => {
     let res = await fetch(
-      "http://localhost:8080/plants/load?offset=1&limit=12"
+      `http://localhost:8080/plants/load?offset=${pageno}&limit=12`
     );
     let response = await res.json();
     setData(response);
@@ -47,11 +57,16 @@ const Plants = () => {
     setData(response);
     console.log(response);
   };
-
+  const HandleIncrement = () => {
+    setPage(page + 1);
+  };
+  const HandleDecrement = () => {
+    setPage(page - 1);
+  };
   useEffect(() => {
-    getAllData();
+    getAllData(page);
     handleSortChange();
-  }, []);
+  }, [page]);
   return (
     <div id={style.PlantParent}>
       <Breadcrumb
@@ -90,7 +105,18 @@ const Plants = () => {
       <section id={style.childContainerPlants}>
         <div className={style.leftChildSection}>
           <h1 className={style.FiltersHead}>Filters</h1>
-          fw
+          <div className={style.PriceContainer}>
+            <h2>Price</h2>
+            <div className={style.PriceValue}>
+              <h4>Rs. 1234</h4>
+              <h4>-</h4>
+              <h4>Rs. 1234</h4>
+            </div>
+            <h4>
+              Current Range:<span>Rs. 123</span>
+            </h4>
+            <div></div>
+          </div>
         </div>
         <div className={style.rightChildSection}>
           <div className={style.SortView}>
@@ -135,6 +161,12 @@ const Plants = () => {
               );
             })}
           </div>
+
+          <Pagination
+            page={page}
+            HandleDecrement={HandleDecrement}
+            HandleIncrement={HandleIncrement}
+          />
         </div>
       </section>
     </div>
