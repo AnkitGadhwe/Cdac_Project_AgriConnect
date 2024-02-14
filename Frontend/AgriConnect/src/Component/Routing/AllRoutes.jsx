@@ -10,8 +10,10 @@ import PumpSpray from "../PumpSpray";
 import PlantCare from "../PlantCare";
 import AboutUs from "../AboutUs";
 import Contact from "../Contact";
+import PlantsDetails from "../PlantDetails";
+import Pebbles from "../Pebbles";
 import PageNotFound from "../PageNotFound";
-
+import Cart from "../Cart";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -25,6 +27,9 @@ const AllRoutes = () => {
       <Route path="/plantcare" element={<PlantCare />} />
       <Route path="/aboutus" element={<AboutUs />} />
       <Route path="/contact" element={<Contact />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/pebbles" element={<Pebbles />} />
+      <Route path="/plantsdetails/:pid" element={<PlantsDetails />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );
