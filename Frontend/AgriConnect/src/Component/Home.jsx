@@ -1,16 +1,21 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Slideshow from "./Slideshow";
 import style from "../CSS/Home.module.css";
 import f1 from "../Images/Feature/f1.png";
 import f2 from "../Images/Feature/f2.png";
 import f6 from "../Images/Feature/f6.png";
-
 import { NavLink } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
+import { ContextApi } from "../Context/AgriConnectContext";
 
 const Home = () => {
   let [data, setData] = useState([]);
-
+  let { cart, setCart } = useContext(ContextApi);
+  // console.log(cart);
+  const handleClick = (element) => {
+    setCart([element, ...cart]);
+    console.log(cart);
+  };
   const getAllData = async () => {
     let res = await fetch("http://localhost:8080/plants/load?offset=3&limit=5");
     let response = await res.json();
@@ -120,7 +125,10 @@ const Home = () => {
                       <button className={style.QuickShop}>Quick Shop</button>
                     </NavLink>
 
-                    <button className={style.CartButton}>
+                    <button
+                      className={style.CartButton}
+                      onClick={() => handleClick(ele)}
+                    >
                       <FaCartPlus />
                     </button>
                   </div>

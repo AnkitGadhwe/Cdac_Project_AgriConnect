@@ -1,0 +1,83 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+
+
+*{
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Roboto', sans-serif;
+}
+#CartParent{
+  width: 80%;
+  /* border: 1px solid black; */
+  margin: auto;
+  margin-top:50px;
+}
+#CartParent h1{
+  margin-top:20px ;
+}
+.CartChild{
+  display: flex;
+  gap:20px;
+  width: 100%;
+  /* border: 1px solid black; */
+  margin-top: 30px;
+}
+.LeftSection{
+  width: 80%;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  border-radius: 10px;
+  /* border: 1px solid red; */
+}
+
+.RightSection{
+  width: 30%;
+  height: 200px;
+  border: 1px solid blue;
+}
+.ProductContainer{
+  display: flex;
+  justify-content: space-evenly;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 20px;
+  border-radius: 10px;
+}
+.ProductContainer img{
+  width: 15%;
+  height: 150px;
+}
+.PriceTitle{
+  display: flex;
+  gap:10px;
+  flex-direction: column;
+  margin: auto;
+  width: 30%;
+}
+.Quantity button{
+  border: none;
+  height: 30px;
+  width: 30px;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  background-color: white;
+  cursor: pointer;
+  margin-top: 5px;
+}
+.ProductContainer h4{
+  margin: auto;
+  text-align: center;
+}
+.DeleteButton{
+ height: 30px;
+ align-items: center;
+ margin-top: 59px;
+ background-color: rgb(116,193,20);
+ color: white;
+ border: none;
+ border-radius: 10px;
+ padding: 5px;
+ align-items: center;
+ cursor: pointer;
+}

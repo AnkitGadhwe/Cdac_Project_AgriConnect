@@ -119,3 +119,7 @@
   border: 1px solid black;
   margin-bottom: 20px;
 }
+.RightSection h2:nth-child(1){
+  text-align: center;
+  color:green;
+}

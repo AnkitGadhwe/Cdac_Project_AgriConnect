@@ -1,12 +1,14 @@
-import React from "react";
+import React, { useContext } from "react";
 import style from "../CSS/Navbar.module.css";
 import { FaSearch } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
 import { FaCartShopping } from "react-icons/fa6";
 import { NavLink } from "react-router-dom";
 import Imagelogo from "../Images/Imagelogo.png";
-
+import { ContextApi } from "../Context/AgriConnectContext";
 const Navbar = () => {
+  let { cart } = useContext(ContextApi);
+  let CartLength = cart.length;
   return (
     <nav id={style.navbar}>
       <section id={style.upperSection}>
@@ -32,10 +34,12 @@ const Navbar = () => {
         <div className={style.searchDiv}>
           <div className={style.buttonContainer}>
             {" "}
-            <button className={style.quantity}>0</button>
-            <button className={style.cartButton}>
-              <FaCartShopping size={33} />
-            </button>
+            <button className={style.quantity}>{CartLength}</button>
+            <NavLink to="/cart">
+              <button className={style.cartButton}>
+                <FaCartShopping size={33} />
+              </button>
+            </NavLink>
           </div>
         </div>
       </section>

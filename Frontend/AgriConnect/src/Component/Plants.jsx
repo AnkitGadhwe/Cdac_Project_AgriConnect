@@ -5,13 +5,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link, NavLink } from "react-router-dom";
 import { GoListUnordered } from "react-icons/go";
 import { MdOutlineGridView } from "react-icons/md";
-import Slider from "react-slider";
-import {
-  RangeSlider,
-  RangeSliderTrack,
-  RangeSliderFilledTrack,
-  RangeSliderThumb,
-} from "@chakra-ui/react";
+
 import Pagination from "../Component/Pagination";
 
 const MIN = 1000;
@@ -115,7 +109,9 @@ const Plants = () => {
             <h4>
               Current Range:<span>Rs. 123</span>
             </h4>
-            <div></div>
+            <div>
+              <input type="range" defaultValue={0} />
+            </div>
           </div>
         </div>
         <div className={style.rightChildSection}>
