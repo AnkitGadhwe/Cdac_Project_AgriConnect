@@ -26,9 +26,9 @@ public class ConsumerDaoImpl implements ConsumerDao {
 
     @Transactional
     public boolean uploadData(String firstname, String lastname, String EmailId, String address, String pincode, String state,
-                              String gender, String whatsApp_Number, String userPassword, MultipartFile profileImage) {
+                              String gender, String whatsApp_Number, String userPassword) {
         try {
-            InputStream imageStream = profileImage.getInputStream();
+            
             Map<String, Object> inParams = new HashMap<>();
             inParams.put("firstname", firstname);
             inParams.put("lastname", lastname);
@@ -39,7 +39,7 @@ public class ConsumerDaoImpl implements ConsumerDao {
             inParams.put("gender", gender);
             inParams.put("whatsApp_Number", whatsApp_Number);
             inParams.put("user_Password", userPassword);
-            inParams.put("user_profile_Image", imageStream);
+            
 
             jdbcCall.declareParameters(
                     new SqlParameter("firstname", Types.VARCHAR),
@@ -50,8 +50,7 @@ public class ConsumerDaoImpl implements ConsumerDao {
                     new SqlParameter("state", Types.VARCHAR),
                     new SqlParameter("gender", Types.VARCHAR),
                     new SqlParameter("whatsApp_Number", Types.VARCHAR),
-                    new SqlParameter("user_Password", Types.VARCHAR),
-                    new SqlParameter("user_profile_Image", Types.BLOB));
+                    new SqlParameter("user_Password", Types.VARCHAR));
 
             jdbcCall.execute(inParams);
             return true;

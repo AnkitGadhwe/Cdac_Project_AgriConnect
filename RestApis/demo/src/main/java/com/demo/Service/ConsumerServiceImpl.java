@@ -14,9 +14,9 @@ public class ConsumerServiceImpl implements ConsumerService{
 	
 	@Override
 	public boolean uploadData(String firstname, String lastname,String email, String address, String pincode, String state,
-			String gender, String whatsApp_Number, String userPassword, MultipartFile profileImage) {
+			String gender, String whatsApp_Number, String userPassword) {
 		// TODO Auto-generated method stub
-		return cdao.uploadData( firstname,  lastname, email, address,   pincode,   state,   gender,  whatsApp_Number,  userPassword,profileImage);
+		return cdao.uploadData( firstname,  lastname, email, address,   pincode,   state,   gender,  whatsApp_Number,  userPassword);
 	}
 
 }

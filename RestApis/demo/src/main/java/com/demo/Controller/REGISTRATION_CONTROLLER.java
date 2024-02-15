@@ -17,9 +17,9 @@ public class REGISTRATION_CONTROLLER {
 	ConsumerService cService;
 
 	@PostMapping("/upload")
-    public ResponseEntity<Boolean> uploadData(@RequestParam String Firstname,@RequestParam String Lastname,@RequestParam String EMailid,@RequestParam String Address, @RequestParam String Pincode, @RequestParam String State, @RequestParam String Gender,@RequestParam String WhatsApp_Number,@RequestParam String UserPassword,@RequestParam MultipartFile profileImage) {
+    public ResponseEntity<Boolean> uploadData(@RequestParam String Firstname,@RequestParam String Lastname,@RequestParam String EMailid,@RequestParam String Address, @RequestParam String Pincode, @RequestParam String State, @RequestParam String Gender,@RequestParam String WhatsApp_Number,@RequestParam String UserPassword) {
        
-		boolean flag = cService.uploadData(  Firstname,  Lastname, EMailid, Address,   Pincode,   State,   Gender,  WhatsApp_Number,  UserPassword,profileImage);
+		boolean flag = cService.uploadData(  Firstname,  Lastname, EMailid, Address,   Pincode,   State,   Gender,  WhatsApp_Number,  UserPassword);
 		if(flag) {
 			return ResponseEntity.ok(flag);
 		}

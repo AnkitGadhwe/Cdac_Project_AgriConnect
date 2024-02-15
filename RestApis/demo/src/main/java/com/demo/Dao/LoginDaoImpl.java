@@ -33,7 +33,7 @@ public class LoginDaoImpl implements LoginDao {
     @Autowired
     private DataSource datasource;
     
-    private String otpU = "23";
+    private String otpU ;
     
     
     public LoginDaoImpl(JdbcTemplate jdbctemplate) {
