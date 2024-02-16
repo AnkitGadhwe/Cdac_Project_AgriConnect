@@ -78,7 +78,7 @@
   margin-top: 30px;
 }
 .PlantFoodPoster{
-  background-image: url('https://i.pinimg.com/236x/f8/c6/10/f8c610fe641cd8a6cf5441ffd61df796.jpg');
+  background-image: url('../Images/plantsfood.jpg');
   background-repeat: no-repeat;
   background-size: 750px 320px;
   height: 305px;
@@ -90,7 +90,7 @@
   object-fit: contain;
 }
 .PlantFoodPoster2{
-  background-image: url('https://i.pinimg.com/236x/1a/1e/c2/1a1ec284b8859576dbf25ba63c4813c6.jpg');
+  background-image: url('../Images/Pebbles.jpg');
   background-repeat: no-repeat;
   background-size: 445px 200px;
   height: 200px;
@@ -101,7 +101,7 @@
   object-fit: contain;
 }
 .PlantFoodPoster3{
-  background-image: url('https://i.pinimg.com/236x/35/4e/c8/354ec842e77e5f9848e8b1b95581da71.jpg');
+  background-image: url('../Images/spray_pump_for_1_832x619.png');
   background-repeat: no-repeat;
   background-size: 445px 200px;
   height: 200px;
@@ -112,7 +112,7 @@
   object-fit: contain;
 }
 .PlantFoodPoster4{
-  background-image: url('../Images/pots.jpg');
+  background-image: url('../Images/nursery_pots.webp');
   background-repeat: no-repeat;
   background-size: 445px 200px;
   height: 200px;
@@ -124,19 +124,103 @@
 }
 .PlantFoodPoster h1{
   position: absolute;
-  top:215px;
-  left: 50px;
-  font-size: 60px;
-  font-weight: 800;
+  top:26px;
+  left: 25px;
+  font-size: 30px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 2px 2px black;
 }
 .PlantFoodPoster p{
   position: absolute;
-  top:300px;
-  left: 12px;
-  font-size: 25px;
-  font-weight: 600;
+  top:75px;
+  left: 25px;
+  text-align: start;
+  font-size: 20px;
   width: 50%;
+  color: white;
+  text-shadow: 1px 1px black;
 }
+
+.PlantFoodPoster5 h1{
+  position: absolute;
+  top:26px;
+  right: 25px;
+  transform: scalex(-1);
+  font-size: 30px;
+  font-weight: 900;
+  color: black;
+  text-shadow: 2px 2px white;
+}
+.PlantFoodPoster5 p{
+  position: absolute;
+  top:75px;
+  right: 25px;
+  font-size: 20px;
+  text-align: start;
+  transform: scalex(-1);
+  width: 50%;
+  color: black;
+  text-shadow: 1px 1px white;
+}
+.PlantFoodPoster2 h1{
+  position: absolute;
+  top:25px;
+  left: 10px;
+  font-size: 30px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 1.5px 1.5px black;
+}
+.PlantFoodPoster2 p{
+  position: absolute;
+  text-align: start;
+  top:65px;
+  left: 10px;
+  font-size: 20px;
+  width: 80%;
+  color: white;
+  text-shadow: 1px 1px black;
+}
+.PlantFoodPoster3 h1{
+  position: absolute;
+  top:220px;
+  left: 10px;
+  font-size: 30px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 1.5px 1.5px black;
+}
+.PlantFoodPoster3 p{
+  position: absolute;
+  text-align: start;
+  top:260px;
+  left: 10px;
+  font-size: 20px;
+  width: 80%;
+  color: white;
+  text-shadow: 1px 1px black;
+}
+.PlantFoodPoster4 h1{
+  position: absolute;
+  top:420px;
+  left: 10px;
+  font-size: 30px;
+  font-weight: 900;
+  color: white;
+  text-shadow: 1.5px 1.5px black;
+}
+.PlantFoodPoster4 p{
+  position: absolute;
+  text-align: start;
+  top:460px;
+  left: 10px;
+  font-size: 20px;
+  width: 80%;
+  color: white;
+  text-shadow: 1px 1px black;
+}
+
 #featureCollection{
 margin-top: 50px;
 margin: auto;
@@ -214,7 +298,8 @@ margin-bottom: 30px;
   width: 120px;
 }
 .PlantFoodPoster5{
-  background-image: url('https://i.pinimg.com/236x/3a/6b/2d/3a6b2d0c48ca04b613bf1a1c95083bee.jpg');
+  background-image: url('../Images/Indoor_554x370.jpg');
+  transform: scalex(-1);
   background-repeat: no-repeat;
   background-size: 750px 320px;
   height: 300px;

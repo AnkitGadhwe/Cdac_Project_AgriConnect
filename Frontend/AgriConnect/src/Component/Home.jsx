@@ -10,11 +10,28 @@ import { ContextApi } from "../Context/AgriConnectContext";
 
 const Home = () => {
   let [data, setData] = useState([]);
+  let [warning, setWarning] = useState(false);
+
   let { cart, setCart } = useContext(ContextApi);
   // console.log(cart);
   const handleClick = (element) => {
-    setCart([element, ...cart]);
-    console.log(cart);
+    let isPresent = false;
+
+    cart.forEach((ele) => {
+      if (ele.pid === element.pid) {
+        isPresent = true;
+      }
+    });
+    if (isPresent) {
+      setWarning(true);
+      setTimeout(() => {
+        setWarning(false);
+      }, 2000);
+      console.log("Product is already present");
+    } else {
+      setCart([element, ...cart]);
+      console.log(cart);
+    }
   };
   const getAllData = async () => {
     let res = await fetch("http://localhost:8080/plants/load?offset=3&limit=5");
@@ -36,8 +53,11 @@ const Home = () => {
         <h2 className={style.sectionHeading}>What Sets Us Apart !</h2>
         <section id={style.featuresParent}>
           <div className={style.featureBox}>
-            <img src={f1} alt="f1-img" />
-            <h5>Free Shipping</h5>
+            <img
+              src="https://mybageecha.com/cdn/shop/files/cash_on_delivery_60x.png?v=1614291109"
+              alt="https://mybageecha.com/cdn/shop/files/cash_on_delivery_60x.png?v=1614291109"
+            />
+            <h5>Cash on Delivery</h5>
           </div>
           <div className={style.featureBox}>
             <img src={f2} alt="f2-img" />
@@ -76,35 +96,54 @@ const Home = () => {
             <NavLink to="/plantfood">
               {" "}
               <button className={style.PlantFoodPoster}>
-                {/* <h1>Plant Food</h1>
+                <h1>Plant Food</h1>
                 <p>
                   Choose from a wide range of organic, chemical fertilizers and
                   other growing media
-                </p> */}
+                </p>
               </button>
             </NavLink>
             <NavLink to="/plantfood">
               {" "}
               <button className={style.PlantFoodPoster5}>
-                {/* <h1>Plant Food</h1>
+                <h1>Artifical Plants</h1>
                 <p>
-                  Choose from a wide range of organic, chemical fertilizers and
-                  other growing media
-                </p> */}
+                  Synthetic foliage adds a touch of nature to contemporary
+                  living spaces.
+                </p>
               </button>
             </NavLink>
           </div>
-          <div style={{ display: "flex", gap: "5px", flexDirection: "column" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: "5px",
+              flexDirection: "column",
+              position: "relative",
+            }}
+          >
             <NavLink to="/pebbles">
-              <button className={style.PlantFoodPoster2}></button>
+              <button className={style.PlantFoodPoster2}>
+                <h1>Pebbles</h1>
+                <p>Choose from a wide collection.Various color and sizes</p>
+              </button>
             </NavLink>
             <NavLink to="/potplants">
               {" "}
-              <button className={style.PlantFoodPoster3}></button>
+              <button className={style.PlantFoodPoster3}>
+                <h1>Pumps and Sprays</h1>
+                <p>Elevate your plants with daily Spray Pumping</p>
+              </button>
             </NavLink>
             <NavLink to="/pumpspray">
               {" "}
-              <button className={style.PlantFoodPoster4}></button>
+              <button className={style.PlantFoodPoster4}>
+                <h1>Plastic Pots</h1>
+                <p>
+                  Durable plastic pots ensure lasting support for delicate
+                  nursery plants.
+                </p>
+              </button>
             </NavLink>
           </div>
         </section>
@@ -135,6 +174,7 @@ const Home = () => {
                 </div>
               );
             })}
+            {warning && <div>Item alreay present in cart</div>}
           </div>
           <NavLink to="/plant">
             <button className={style.ViewAllButton}>View All</button>

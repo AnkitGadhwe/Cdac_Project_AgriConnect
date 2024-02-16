@@ -5,7 +5,7 @@
 } 
 
 #contactPoster{
- background-image: url('../Images/ContactImg2.jpg');
+ background-image: url('../Images/Contact.jpg');
  background-repeat: no-repeat;
  height:400px;
  width: 80%;
@@ -15,12 +15,14 @@
  border-radius: 10px;
 }
 #contactPoster h1{
-  color:ghostwhite;
+  text-shadow: 3px 3px black;
+  color:white;
   text-align: center;
   padding-top: 125px;
 }
 #contactPoster h4{
-  color:white;
+  text-shadow: 3px 3px black;
+  color: white;
   text-align: center;
    width: 80%;
    padding-left: 267px;

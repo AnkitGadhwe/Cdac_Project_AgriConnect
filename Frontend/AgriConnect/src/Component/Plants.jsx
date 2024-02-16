@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import style from "../CSS/Plants.module.Css";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link, NavLink } from "react-router-dom";
 import { GoListUnordered } from "react-icons/go";
 import { MdOutlineGridView } from "react-icons/md";
-
+import { ContextApi } from "../Context/AgriConnectContext";
 import Pagination from "../Component/Pagination";
 
 const MIN = 1000;
@@ -14,6 +14,23 @@ const Plants = () => {
   let [data, setData] = useState([]);
   let [page, setPage] = useState(1);
   let [price, setPrice] = useState([MIN, MAX]);
+  let { cart, setCart } = useContext(ContextApi);
+
+  const handleClick = (element) => {
+    let isPresent = false;
+
+    cart.forEach((ele) => {
+      if (ele.pid === element.pid) {
+        isPresent = true;
+      }
+    });
+    if (isPresent) {
+      console.log("Product is already present");
+    } else {
+      setCart([element, ...cart]);
+      console.log(cart);
+    }
+  };
 
   const getAllData = async (pageno) => {
     let res = await fetch(
@@ -113,6 +130,16 @@ const Plants = () => {
               <input type="range" defaultValue={0} />
             </div>
           </div>
+
+          <div className={style.StockFilter}>
+            <h4>Check Availability</h4>
+            <div>
+              <input type="checkbox" id="OutStock" />
+              <label for="OutStock">Out of Stock</label>
+              <input type="checkbox" id="InStock" />
+              <label for="InStock">In Stock</label>
+            </div>
+          </div>
         </div>
         <div className={style.rightChildSection}>
           <div className={style.SortView}>
@@ -151,7 +178,12 @@ const Plants = () => {
                     <NavLink to={`/plantsdetails/${ele.pid}`}>
                       <button className={style.QuickShop}>Quick Shop</button>
                     </NavLink>
-                    <button className={style.CartButton}>Add To Cart</button>
+                    <button
+                      onClick={() => handleClick(ele)}
+                      className={style.CartButton}
+                    >
+                      Add To Cart
+                    </button>
                   </div>
                 </div>
               );
