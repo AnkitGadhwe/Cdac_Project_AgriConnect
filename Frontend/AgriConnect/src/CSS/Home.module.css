@@ -169,8 +169,8 @@
   left: 10px;
   font-size: 30px;
   font-weight: 900;
-  color: white;
-  text-shadow: 1.5px 1.5px black;
+  color: rgb(77,77,77);
+  text-shadow: 1px 1px white;
 }
 .PlantFoodPoster2 p{
   position: absolute;
@@ -179,8 +179,8 @@
   left: 10px;
   font-size: 20px;
   width: 80%;
-  color: white;
-  text-shadow: 1px 1px black;
+  color: rgb(77,77,77);
+  text-shadow: 1px 1px white;
 }
 .PlantFoodPoster3 h1{
   position: absolute;
@@ -188,8 +188,8 @@
   left: 10px;
   font-size: 30px;
   font-weight: 900;
-  color: white;
-  text-shadow: 1.5px 1.5px black;
+  color: rgb(77,77,77);
+  text-shadow: 1px 1px white;
 }
 .PlantFoodPoster3 p{
   position: absolute;
@@ -198,8 +198,8 @@
   left: 10px;
   font-size: 20px;
   width: 80%;
-  color: white;
-  text-shadow: 1px 1px black;
+  color: rgb(77,77,77);
+  text-shadow: 1px 1px white;
 }
 .PlantFoodPoster4 h1{
   position: absolute;
@@ -207,8 +207,8 @@
   left: 10px;
   font-size: 30px;
   font-weight: 900;
-  color: white;
-  text-shadow: 1.5px 1.5px black;
+  color: rgb(77,77,77);
+  text-shadow: 1px 1px white;
 }
 .PlantFoodPoster4 p{
   position: absolute;
@@ -217,8 +217,8 @@
   left: 10px;
   font-size: 20px;
   width: 80%;
-  color: white;
-  text-shadow: 1px 1px black;
+  color: rgb(77,77,77);
+  text-shadow: 1px 1px whitesmoke;
 }
 
 #featureCollection{

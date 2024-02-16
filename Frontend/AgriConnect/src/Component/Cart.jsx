@@ -15,12 +15,21 @@ const Cart = () => {
 
   console.log(cart);
   const handleQuantity = (item, sym) => {
-    console.log(item, " ", sym);
+    const updatedCart = cart.map((product) => {
+      if (product.pid === item.pid) {
+        const updatedQuantity = product.pquantity + sym;
+
+        return { ...product, pquantity: updatedQuantity };
+      }
+      return product;
+    });
+
+    setCart(updatedCart);
   };
   const handlePrice = () => {
     let ans = 0;
     cart.map((ele) => {
-      const Price = JSON.parse(ele.pprice);
+      const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
       ans += ele.pquantity * Price[0].SP;
     });
     setPrice(ans);
@@ -83,8 +92,8 @@ const Cart = () => {
         ) : (
           <div className={style.LeftSection}>
             {cart.map((ele, ind) => {
-              const images = JSON.parse(ele.pimages);
-              const Price = JSON.parse(ele.pprice);
+              const images = ele.pimages ? JSON.parse(ele.pimages) : null;
+              const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
               return (
                 <div className={style.ProductContainer}>
                   <img src={images[0].IMG1} alt="error" />
@@ -156,7 +165,7 @@ const Cart = () => {
                 <h5>Rs. {subTotal}</h5>
               </div>
               <div className={style.SummaryChild}>
-                <h5>Total After Discount:</h5>
+                <h5>Payable Now :</h5>
                 <h5>Rs. {subTotal}</h5>
               </div>
             </div>
