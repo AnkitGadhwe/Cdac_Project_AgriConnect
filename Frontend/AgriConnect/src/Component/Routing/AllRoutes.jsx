@@ -21,6 +21,7 @@ import ForgetPassword from "../Login/Component/ForgetPassword";
 import NewPassword from "../Login/Component/NewPassword";
 import PaymentGateway from "../PaymentGateway";
 import Final from "../Final";
+import PotPlantsDetail from "../PotPlantsDetail";
 
 const AllRoutes = () => {
   return (
@@ -44,6 +45,7 @@ const AllRoutes = () => {
       <Route path="/otp" element={<Otp />} />
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/plantsdetails/:pid" element={<PlantsDetails />} />
+      <Route path="/potplantsdetails/:pid" element={<PotPlantsDetail />} />
       <Route path="/paymentgateway" element={<PaymentGateway />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

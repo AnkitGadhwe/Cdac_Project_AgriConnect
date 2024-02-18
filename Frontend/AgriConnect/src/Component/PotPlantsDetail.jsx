@@ -3,26 +3,25 @@ import { useParams } from "react-router";
 import style from "../CSS/PlantDetail.module.css";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
 import { Carousel } from "react-responsive-carousel";
-import { FaStar } from "react-icons/fa";
-import { FaStarHalfAlt } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaPlus, FaMinus } from "react-icons/fa";
 import { ContextApi } from "../Context/AgriConnectContext";
 
-const PlantsDetails = () => {
+const PotPlantsDetail = () => {
   let { pid } = useParams();
   let [data, setData] = useState({});
   let [quantity, setQuantity] = useState(1);
   let [cartObj, setCartObj] = useState(false);
 
   let { cart, setCart } = useContext(ContextApi);
+
   const handleCart = () => {
     let isPresent = false;
     cart.forEach((ele) => {
-      if (ele.pid === data.pid) {
+      if (ele.ppid === data.ppid) {
+        // assuming the identifier is ppid
         isPresent = true;
       }
     });
@@ -33,26 +32,32 @@ const PlantsDetails = () => {
         setCartObj(false);
       }, 2000);
     } else {
-      data.pquantity = quantity;
-      setCart([data, ...cart]);
+      let newData = { ...data }; // create a copy of data object
+      newData.quantity = quantity; // add quantity property
+      setCart([newData, ...cart]); // update cart
       console.log(cart);
     }
   };
+
   const getSingleData = async () => {
-    let res = await fetch(`http://localhost:8080/plants/${pid}`);
+    let res = await fetch(`http://localhost:8080/pot_planters/${pid}`);
     let response = await res.json();
     setData(response);
     console.log(response);
   };
+
   useEffect(() => {
     getSingleData();
   }, []);
+
   const handleIncrement = () => {
     setQuantity(quantity + 1);
   };
+
   const handleDecrement = () => {
     setQuantity(quantity - 1);
   };
+
   return (
     <div id={style.ProductDetailParent}>
       <Breadcrumb
@@ -76,27 +81,27 @@ const PlantsDetails = () => {
         <BreadcrumbItem>
           <BreadcrumbLink
             as={Link}
-            to="/plant"
+            to="/potplants"
             fontWeight="500"
             fontSize="23px"
             color="rgb(116,193,20)"
             textDecoration={"none"}
           >
-            Plants
+            PotPlants
           </BreadcrumbLink>
         </BreadcrumbItem>
 
         <BreadcrumbItem>
           <BreadcrumbLink
             as={Link}
-            to="/plantdetails/:pid"
+            to={`/potplantsdetails/${pid}`} // corrected interpolation
             fontWeight="500"
             fontSize="23px"
             color="grey"
             textDecoration={"none"}
             isCurrentPage
           >
-            PlantsDetail
+            PotPlantsDetail
           </BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
@@ -104,54 +109,27 @@ const PlantsDetails = () => {
       <div className={style.ProductDetailChild}>
         <div className={style.LeftSection}>
           <Carousel className={style.Carousel}>
-            <div>
-              <img
-                src={
-                  data.pimages && data.pimages.length > 0
-                    ? JSON.parse(data.pimages)[0].IMG1
-                    : ""
-                }
-                alt="Product"
-              />
-            </div>
-            <div>
-              <img
-                src={
-                  data.pimages && data.pimages.length > 0
-                    ? JSON.parse(data.pimages)[0].IMG2
-                    : ""
-                }
-                alt="Product"
-              />
-            </div>
-            <div>
-              <img
-                src={
-                  data.pimages && data.pimages.length > 0
-                    ? JSON.parse(data.pimages)[0].IMG3
-                    : ""
-                }
-                alt="Product"
-              />
-            </div>
+            {data.ppimages &&
+              data.ppimages.length > 0 &&
+              JSON.parse(data.ppimages).map((image, index) => (
+                <div key={index}>
+                  {Object.values(image).map((src, i) => (
+                    <img key={i} src={src} alt={`Product ${index + 1}`} />
+                  ))}
+                </div>
+              ))}
           </Carousel>
         </div>
 
         <div className={style.RightSection}>
-          <h2>{data.ptitle}</h2>
+          <h2>{data.pptitle}</h2>
           <div className={style.Sale}>
             <p>sale</p>
             <h2 className={style.Saleh2}>
-              Rs.
-              {data.pprice && data.pprice.length > 0
-                ? JSON.parse(data.pprice)[0].MP
-                : ""}
+              Rs. {data.ppprice && JSON.parse(data.ppprice)[0].MP}
             </h2>
             <h2 style={{ color: "rgb(77,169,71)" }}>
-              Rs.{" "}
-              {data.pprice && data.pprice.length > 0
-                ? JSON.parse(data.pprice)[0].SP
-                : ""}
+              Rs. {data.ppprice && JSON.parse(data.ppprice)[0].SP}
             </h2>
           </div>
           <div className={style.Rating}>
@@ -160,9 +138,9 @@ const PlantsDetails = () => {
             <FaStar color="rgb(246,195,71)" />
             <FaStar color="rgb(246,195,71)" />
             <FaStarHalfAlt color="rgb(246,195,71)" />
-            <p>{data.prating}</p>
+            <p>{data.pp_RATING}</p>
           </div>
-          <p>{data.pdescription}</p>
+          <p>{data.ppdescription}</p>
 
           <div className={style.QuantityCart}>
             <div className={style.Quantity}>
@@ -258,4 +236,4 @@ const PlantsDetails = () => {
   );
 };
 
-export default PlantsDetails;
+export default PotPlantsDetail;

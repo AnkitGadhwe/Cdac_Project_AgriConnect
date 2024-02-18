@@ -5,11 +5,16 @@ const NewPassword = () => {
     newPassword: "",
     confirmNewPassword: "",
   });
+  let [state, setState] = useState("");
   const [error, setError] = useState("");
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+    setState(formData.newPassword);
   };
 
   const handleSubmit = async (e) => {
@@ -21,32 +26,25 @@ const NewPassword = () => {
     }
 
     try {
-      const formBody = new URLSearchParams();
-      formBody.append("Password", formData.newPassword);
-
-      const requestOptions = {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded",
-        },
-        body: formBody.toString(),
-        credentials: "include", // Include cookies in the request
-      };
-
       const response = await fetch(
-        "http://localhost:8080/Update_Password",
-        requestOptions
+        `http://localhost:8080/Update_Password?newPassword=${state}`
       );
-
+      const res = await response.json();
+      console.log(res);
       if (response.ok) {
         const data = await response.json();
         if (data) {
           console.log("Password updated successfully");
-          setError(""); // Clear any previous error
-          setFormData({ newPassword: "", confirmNewPassword: "" }); // Clear form fields
+          setError("");
+          setFormData({
+            newPassword: "",
+            confirmNewPassword: "",
+          });
         } else {
           setError("Failed to update password");
         }
+      } else {
+        setError("Failed to update password");
       }
     } catch (error) {
       console.error("Error:", error);

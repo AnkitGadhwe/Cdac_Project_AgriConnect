@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import style from "../CSS/Plants.module.Css";
+import style from "../CSS/Plants.module.css";
 import {
   Breadcrumb,
   BreadcrumbItem,
@@ -20,6 +20,7 @@ const Plants = () => {
   let { cart, setCart } = useContext(ContextApi);
   let [data, setData] = useState([]);
   let [page, setPage] = useState(1);
+  let [warning, setWarning] = useState(false);
   const [minPrice, setMinPrice] = useState(MIN);
   const [maxPrice, setMaxPrice] = useState(MAX);
 
@@ -51,6 +52,10 @@ const Plants = () => {
     });
     if (isPresent) {
       console.log("Product is already present");
+      setWarning(true);
+      setTimeout(() => {
+        setWarning(false);
+      }, 2000);
     } else {
       setCart([element, ...cart]);
       console.log(cart);
@@ -67,12 +72,12 @@ const Plants = () => {
   };
 
   const handleChangeStock = async (e) => {
-    let url = "http://localhost:8080/plants/load";
+    let url = "http://localhost:8080/plants";
     if (e.target.checked) {
       console.log("checked");
       if (e.target.value === "instock") {
         console.log(e.target.value);
-        url = url + `/StockAvailability?offset=1&limit=12`;
+        url = url + `/Availability?offset=1&limit=12`;
       } else if (e.target.value === "outstock") {
         console.log(e.target.value);
         url = url + `/StockNotAvailability?offset=1&limit=12`;
@@ -112,21 +117,21 @@ const Plants = () => {
     }
   };
   const handleSortChange = async (event) => {
-    let url = "http://localhost:8080/plants/load";
+    let url = "http://localhost:8080/plants";
     //console.log("change");
     console.log(event.target.value);
     let SortValue = event.target.value;
     if (SortValue === "Alphabetically, A-Z") {
-      url = url + `/A-Z?offset=1&limit=12`;
+      url = url + `/load/SORTBYTITLE_A-Z?offset=1&limit=12`;
       console.log(url);
     } else if (SortValue === "Alphabetically, Z-A") {
-      url = url + `/Z-A?offset=1&limit=12`;
+      url = url + `/load/SORTBYTITLE_Z-A?offset=1&limit=12`;
       console.log(url);
     } else if (SortValue === "Price, Low-High") {
-      url = url + `/Low_to_High?offset=1&limit=12`;
+      url = url + `/SORTBYPRICE_Low_TO_High?offset=1&limit=12`;
       console.log(url);
     } else if (SortValue === "Price, High-Low") {
-      url = url + `/High_to_Low?offset=1&limit=12`;
+      url = url + `/SORTBYPRICE_High_TO_Low?offset=1&limit=12`;
       console.log(url);
     } else if (SortValue === "Featured") {
       url = url + `?offset=1&limit=12`;
@@ -304,6 +309,9 @@ const Plants = () => {
           </div>
         </div>
         <div className={style.rightChildSection}>
+          {warning && (
+            <div style={{ color: "red" }}>Item already available in cart</div>
+          )}
           <div className={style.SortView}>
             <div>
               <label>Sort By</label>
@@ -325,38 +333,57 @@ const Plants = () => {
               </button>
             </div>
           </div>
+          <div>
+            {data.length === 0 ? (
+              <h1
+                style={{
+                  color: "red",
+                  textAlign: "center",
+                  marginTop: "150px",
+                  fontSize: "40px",
+                  fontFamily: "700",
+                }}
+              >
+                No Plants available
+              </h1>
+            ) : (
+              <div className={style.PlantContainer}>
+                {data.map((ele, ind) => {
+                  const images = JSON.parse(ele.pimages);
+                  const Price = JSON.parse(ele.pprice);
+                  return (
+                    <div className={style.PlantCard} key={ind}>
+                      <img src={images[0].IMG1} alt="error" />
+                      <h5>Rs. {Price[0].MP}</h5>
+                      <h3>Rs. {Price[0].SP}</h3>
+                      <p>{ele.ptitle}</p>
+                      <div className={style.ButtonBox}>
+                        <NavLink to={`/plantsdetails/${ele.pid}`}>
+                          <button className={style.QuickShop}>
+                            Quick Shop
+                          </button>
+                        </NavLink>
+                        <button
+                          onClick={() => handleClick(ele)}
+                          className={style.CartButton}
+                        >
+                          Add To Cart
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })}
+              </div>
+            )}
 
-          <div className={style.PlantContainer}>
-            {data.map((ele, ind) => {
-              const images = JSON.parse(ele.pimages);
-              const Price = JSON.parse(ele.pprice);
-              return (
-                <div className={style.PlantCard}>
-                  <img src={images[0].IMG1} alt="error" />
-                  <h5>Rs. {Price[0].MP}</h5>
-                  <h3>Rs. {Price[0].SP}</h3>
-                  <p>{ele.ptitle}</p>
-                  <div className={style.ButtonBox}>
-                    <NavLink to={`/plantsdetails/${ele.pid}`}>
-                      <button className={style.QuickShop}>Quick Shop</button>
-                    </NavLink>
-                    <button
-                      onClick={() => handleClick(ele)}
-                      className={style.CartButton}
-                    >
-                      Add To Cart
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
+            {data.length >= 12 ? (
+              <Pagination
+                page={page}
+                HandleDecrement={HandleDecrement}
+                HandleIncrement={HandleIncrement}
+              />
+            ) : null}
           </div>
-
-          <Pagination
-            page={page}
-            HandleDecrement={HandleDecrement}
-            HandleIncrement={HandleIncrement}
-          />
         </div>
       </section>
     </div>

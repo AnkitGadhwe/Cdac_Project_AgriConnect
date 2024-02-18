@@ -20,9 +20,9 @@ const Cart = () => {
 
     const updatedCart = cart.map((product) => {
       if (product.pid === item.pid) {
-        const updatedQuantity = product.pquantity + sym;
+        const updatedQuantity = product.quantity + sym;
 
-        return { ...product, pquantity: updatedQuantity };
+        return { ...product, quantity: updatedQuantity };
       }
       return product;
     });
@@ -33,7 +33,7 @@ const Cart = () => {
     let ans = 0;
     cart.map((ele) => {
       const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
-      ans += ele.pquantity * Price[0].SP;
+      ans += ele.quantity * Price[0].SP;
     });
     setPrice(ans);
     setTax(ans * 0.18);
@@ -51,6 +51,7 @@ const Cart = () => {
     handlePrice();
     handleTotal();
   }, [handleRemove, handleTotal]);
+
   return (
     <div id={style.CartParent}>
       <Breadcrumb
@@ -95,8 +96,10 @@ const Cart = () => {
         ) : (
           <div className={style.LeftSection}>
             {cart.map((ele, ind) => {
-              const images = ele.pimages ? JSON.parse(ele.pimages) : null;
+              const images = ele.ppimages ? JSON.parse(ele.ppimages) : null;
+
               const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
+
               return (
                 <div className={style.ProductContainer}>
                   <img src={images[0].IMG1} alt="error" />
@@ -111,14 +114,14 @@ const Cart = () => {
                     <h5 style={{ color: "grey" }}>Quantity</h5>
                     <div className={style.Quantity}>
                       <button
-                        disabled={ele.pquantity === 1}
+                        disabled={ele.quantity === 1}
                         onClick={() => {
                           handleQuantity(ele, -1);
                         }}
                       >
                         <FaMinus />
                       </button>
-                      <button>{ele.pquantity}</button>
+                      <button>{ele.quantity}</button>
                       <button
                         onClick={() => {
                           handleQuantity(ele, +1);
@@ -128,7 +131,7 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-                  <h4>Rs. {ele.pquantity * Price[0].SP}</h4>
+                  <h4>Rs. {ele.quantity * Price[0].SP}</h4>
                   <button
                     onClick={() => {
                       handleRemove(ele.pid);

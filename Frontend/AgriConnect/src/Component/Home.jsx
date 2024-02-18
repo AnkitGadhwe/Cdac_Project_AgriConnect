@@ -6,12 +6,10 @@ import f6 from "../Images/Feature/f6.png";
 import { NavLink } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { ContextApi } from "../Context/AgriConnectContext";
-import Login from "../Component/Login/Component/Login";
 
 const Home = () => {
   let [data, setData] = useState([]);
   let [warning, setWarning] = useState(false);
-
   let { cart, setCart } = useContext(ContextApi);
   // console.log(cart);
   const handleClick = (element) => {
@@ -174,8 +172,10 @@ const Home = () => {
                 </div>
               );
             })}
-            {warning && <div>Item alreay present in cart</div>}
           </div>
+          {warning && (
+            <div style={{ color: "red" }}>Item already available in cart</div>
+          )}
           <NavLink to="/plant">
             <button className={style.ViewAllButton}>View All</button>
           </NavLink>

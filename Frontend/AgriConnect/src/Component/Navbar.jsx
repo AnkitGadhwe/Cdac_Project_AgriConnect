@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import style from "../CSS/Navbar.module.css";
 import { FaSearch } from "react-icons/fa";
 import { CiUser } from "react-icons/ci";
@@ -7,8 +7,12 @@ import { NavLink } from "react-router-dom";
 import Imagelogo from "../Images/Imagelogo.png";
 import { ContextApi } from "../Context/AgriConnectContext";
 const Navbar = () => {
+  let [state, setState] = useState("");
   let { cart } = useContext(ContextApi);
   let CartLength = cart.length;
+  const handleClick = () => {
+    console.log(state);
+  };
   return (
     <nav id={style.navbar}>
       <section id={style.upperSection}>
@@ -17,11 +21,14 @@ const Navbar = () => {
 
         <div className={style.searchDiv}>
           <input
+            onChange={(e) => {
+              setState(e.target.value);
+            }}
             className={style.searchInput}
             type="text"
             placeholder="What are you looking for?"
           />
-          <button className={style.searchButton}>
+          <button className={style.searchButton} onClick={handleClick}>
             <FaSearch />
           </button>
         </div>
