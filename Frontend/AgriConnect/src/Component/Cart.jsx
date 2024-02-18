@@ -6,6 +6,7 @@ import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
+import { NavLink } from "react-router-dom";
 const Cart = () => {
   let [price, setPrice] = useState(0);
   let [subTotal, setSubTotal] = useState(0);
@@ -170,6 +171,10 @@ const Cart = () => {
                 <h5>Payable Now :</h5>
                 <h5>Rs. {subTotal}</h5>
               </div>
+              <hr />
+              <NavLink to="/paymentgateway">
+                <button>Checkout</button>
+              </NavLink>
             </div>
           </div>
         )}

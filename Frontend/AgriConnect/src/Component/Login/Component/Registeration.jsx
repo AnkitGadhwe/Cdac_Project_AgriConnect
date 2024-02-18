@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+// import { myFunction } from "./Reg";
 
 function Registeration() {
   const [formData, setFormData] = useState({
@@ -12,11 +13,13 @@ function Registeration() {
     WhatsApp_Number: "",
     UserPassword: "",
   });
+
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
-
+  const [mob, setMob] = useState(0);
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    setMob(formData.WhatsApp_Number);
   };
 
   const handleSubmit = (e) => {
@@ -44,6 +47,8 @@ function Registeration() {
         } else {
           setError("");
           setUserId(data);
+
+          // myFunction(data, mob);
         }
       })
       .catch((error) => {

@@ -19,6 +19,9 @@ import Login from "../Login/Component/Login";
 import Registeration from "../Login/Component/Registeration";
 import ForgetPassword from "../Login/Component/ForgetPassword";
 import NewPassword from "../Login/Component/NewPassword";
+import PaymentGateway from "../PaymentGateway";
+import Final from "../Final";
+
 const AllRoutes = () => {
   return (
     <Routes>
@@ -35,11 +38,13 @@ const AllRoutes = () => {
       <Route path="/cart" element={<Cart />} />
       <Route path="/pebbles" element={<Pebbles />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/final" element={<Final />} />
       <Route path="/registration" element={<Registeration />} />
       <Route path="/forgotpassword" element={<ForgetPassword />} />
       <Route path="/otp" element={<Otp />} />
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/plantsdetails/:pid" element={<PlantsDetails />} />
+      <Route path="/paymentgateway" element={<PaymentGateway />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
   );

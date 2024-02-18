@@ -12,25 +12,33 @@ import { GoListUnordered } from "react-icons/go";
 import { MdOutlineGridView } from "react-icons/md";
 import { ContextApi } from "../Context/AgriConnectContext";
 import Pagination from "../Component/Pagination";
-
-const MIN = 100;
-const MAX = 1000;
+import PriceRangeSlider from "./PriceRangeSlider";
+import FilterImage from "../Images/FilterImage.png";
+const MIN = 0;
+const MAX = 2000;
 const Plants = () => {
   let { cart, setCart } = useContext(ContextApi);
   let [data, setData] = useState([]);
   let [page, setPage] = useState(1);
-  let [priceRange, setPriceRange] = useState([MIN, MAX]);
+  const [minPrice, setMinPrice] = useState(MIN);
+  const [maxPrice, setMaxPrice] = useState(MAX);
 
-  const handlePriceChange = (value) => {
-    setPriceRange(value);
-  };
-  const handleInStock = (e) => {
-    console.log("checked");
-    console.log(e.target.value);
-    let value = e.target.value;
-    let url = "http://localhost:8080/plants/load";
-    if (value === "instock") {
-      url += ``;
+  const handleRangeChange = async (newRange) => {
+    const [newMinPrice, newMaxPrice] = newRange;
+    setMinPrice(newMinPrice);
+    setMaxPrice(newMaxPrice);
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/plants/load/by_price?offset=0&limit=12&from=${newMinPrice}&to=${newMaxPrice}`
+      );
+      if (!response.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      setData(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
     }
   };
 
@@ -58,6 +66,51 @@ const Plants = () => {
     console.log(response);
   };
 
+  const handleChangeStock = async (e) => {
+    let url = "http://localhost:8080/plants/load";
+    if (e.target.checked) {
+      console.log("checked");
+      if (e.target.value === "instock") {
+        console.log(e.target.value);
+        url = url + `/StockAvailability?offset=1&limit=12`;
+      } else if (e.target.value === "outstock") {
+        console.log(e.target.value);
+        url = url + `/StockNotAvailability?offset=1&limit=12`;
+      }
+      let res = await fetch(url);
+      let response = await res.json();
+      setData(response);
+      console.log(response);
+    } else {
+      console.log("⛔️ Checkbox is NOT checked", e.target.value);
+    }
+  };
+
+  const handleChangeRating = async (e) => {
+    let url = "http://localhost:8080/plants/load";
+    if (e.target.checked) {
+      console.log("checked");
+      if (e.target.value === "4.4") {
+        console.log(e.target.value);
+        url = url + `/by_rating?&rating=${4.4}&offset=1&limit=12`;
+      } else if (e.target.value === "4.5") {
+        console.log(e.target.value);
+        url = url + `/by_rating?&rating=${4.5}&offset=1&limit=12`;
+      } else if (e.target.value === "4.6") {
+        console.log(e.target.value);
+        url = url + `/by_rating?&rating=${4.6}&offset=1&limit=12`;
+      } else if (e.target.value === "4.7") {
+        console.log(e.target.value);
+        url = url + `/by_rating?&rating=${4.7}&offset=1&limit=12`;
+      }
+      let res = await fetch(url);
+      let response = await res.json();
+      setData(response);
+      console.log(response);
+    } else {
+      console.log("⛔️ Checkbox is NOT checked", e.target.value);
+    }
+  };
   const handleSortChange = async (event) => {
     let url = "http://localhost:8080/plants/load";
     //console.log("change");
@@ -91,9 +144,14 @@ const Plants = () => {
   const HandleDecrement = () => {
     setPage(page - 1);
   };
+  const handleRemoveFilter = async () => {
+    getAllData(page);
+  };
   useEffect(() => {
     getAllData(page);
     handleSortChange();
+    handleChangeStock();
+    handleChangeRating();
   }, [page]);
   return (
     <div id={style.PlantParent}>
@@ -133,21 +191,114 @@ const Plants = () => {
       <section id={style.childContainerPlants}>
         <div className={style.leftChildSection}>
           <h1 className={style.FiltersHead}>Filters</h1>
-          <div className={style.StockAvailability}>
-            <h4>Stock Availability</h4>
-            <div>
-              <div>
-                <input
-                  id="instock"
-                  type="checkbox"
-                  onChange={handleInStock}
-                  value="instock"
-                />
-                <label for="instock">In Stock</label>
+          <div className={style.FilterChild}>
+            <h4
+              style={{
+                fontSize: "25px",
+                color: "rgb(105,190,99)",
+                marginBottom: "10px",
+              }}
+            >
+              Price
+            </h4>
+            <div style={{ margintop: "20px" }}>
+              {" "}
+              <PriceRangeSlider
+                minPrice={MIN}
+                maxPrice={MAX}
+                onRangeChange={handleRangeChange}
+              />
+              <h4
+                style={{
+                  fontSize: "25px",
+                  color: "rgb(105,190,99)",
+                  marginBottom: "10px",
+                }}
+              >
+                Stock Availability
+              </h4>
+              <div style={{ margintop: "20px" }}>
+                {" "}
+                <div>
+                  <div className={style.StockBox}>
+                    <input
+                      id="instock"
+                      type="checkbox"
+                      value="instock"
+                      onChange={handleChangeStock}
+                    />
+                    <label for="instock">In Stock</label>
+                  </div>
+                  <div className={style.StockBox}>
+                    <input
+                      value="outstock"
+                      onChange={handleChangeStock}
+                      type="checkbox"
+                      id="outstock"
+                    />
+                    <label for="outstock">Out of Stock</label>
+                  </div>
+                </div>
               </div>
-              <div>
-                <input id="outstock" type="checkbox" />
-                <label for="outstock">Out of Stock</label>
+              <h4
+                style={{
+                  fontSize: "25px",
+                  color: "rgb(105,190,99)",
+                  marginBottom: "10px",
+                  marginTop: "30px",
+                }}
+              >
+                Rating
+              </h4>
+              <div className={style.StockBox}>
+                <input
+                  type="checkbox"
+                  id="Above4.4"
+                  value="4.4"
+                  onChange={handleChangeRating}
+                />
+                <label for="4.4">Rating 4.4</label>
+              </div>
+              <div className={style.StockBox}>
+                <input
+                  type="checkbox"
+                  id="Above4.5"
+                  value="4.5"
+                  onChange={handleChangeRating}
+                />
+                <label for="4.5">Rating 4.5</label>
+              </div>
+              <div className={style.StockBox}>
+                <input
+                  type="checkbox"
+                  id="Above4.6"
+                  value="4.6"
+                  onChange={handleChangeRating}
+                />
+                <label for="4.6">Rating 4.6</label>
+              </div>
+              <div className={style.StockBox}>
+                <input
+                  type="checkbox"
+                  id="Above4.7"
+                  value="4.7"
+                  onChange={handleChangeRating}
+                />
+                <label for="4.7">Rating 4.7</label>
+              </div>
+              <button
+                style={{
+                  marginTop: "20px",
+                  marginRight: "20px",
+                  cursor: "pointer",
+                }}
+                className={style.QuickShop}
+                onClick={handleRemoveFilter}
+              >
+                Remove Filter
+              </button>
+              <div className={style.posterFilter}>
+                <img src={FilterImage} alt="error" />
               </div>
             </div>
           </div>
