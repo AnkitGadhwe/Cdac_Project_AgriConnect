@@ -1,6 +1,11 @@
 import React, { useEffect, useState, useContext } from "react";
 import style from "../CSS/Plants.module.Css";
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  flexbox,
+} from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
 import { Link, NavLink } from "react-router-dom";
 import { GoListUnordered } from "react-icons/go";
@@ -8,17 +13,29 @@ import { MdOutlineGridView } from "react-icons/md";
 import { ContextApi } from "../Context/AgriConnectContext";
 import Pagination from "../Component/Pagination";
 
-const MIN = 1000;
-const MAX = 20000;
+const MIN = 100;
+const MAX = 1000;
 const Plants = () => {
+  let { cart, setCart } = useContext(ContextApi);
   let [data, setData] = useState([]);
   let [page, setPage] = useState(1);
-  let [price, setPrice] = useState([MIN, MAX]);
-  let { cart, setCart } = useContext(ContextApi);
+  let [priceRange, setPriceRange] = useState([MIN, MAX]);
+
+  const handlePriceChange = (value) => {
+    setPriceRange(value);
+  };
+  const handleInStock = (e) => {
+    console.log("checked");
+    console.log(e.target.value);
+    let value = e.target.value;
+    let url = "http://localhost:8080/plants/load";
+    if (value === "instock") {
+      url += ``;
+    }
+  };
 
   const handleClick = (element) => {
     let isPresent = false;
-
     cart.forEach((ele) => {
       if (ele.pid === element.pid) {
         isPresent = true;
@@ -116,28 +133,22 @@ const Plants = () => {
       <section id={style.childContainerPlants}>
         <div className={style.leftChildSection}>
           <h1 className={style.FiltersHead}>Filters</h1>
-          <div className={style.PriceContainer}>
-            <h2>Price</h2>
-            <div className={style.PriceValue}>
-              <h4>Rs. 1234</h4>
-              <h4>-</h4>
-              <h4>Rs. 1234</h4>
-            </div>
-            <h4>
-              Current Range:<span>Rs. 123</span>
-            </h4>
+          <div className={style.StockAvailability}>
+            <h4>Stock Availability</h4>
             <div>
-              <input type="range" defaultValue={0} />
-            </div>
-          </div>
-
-          <div className={style.StockFilter}>
-            <h4>Check Availability</h4>
-            <div>
-              <input type="checkbox" id="OutStock" />
-              <label for="OutStock">Out of Stock</label>
-              <input type="checkbox" id="InStock" />
-              <label for="InStock">In Stock</label>
+              <div>
+                <input
+                  id="instock"
+                  type="checkbox"
+                  onChange={handleInStock}
+                  value="instock"
+                />
+                <label for="instock">In Stock</label>
+              </div>
+              <div>
+                <input id="outstock" type="checkbox" />
+                <label for="outstock">Out of Stock</label>
+              </div>
             </div>
           </div>
         </div>

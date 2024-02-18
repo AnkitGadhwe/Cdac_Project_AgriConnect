@@ -4,8 +4,12 @@ export let ContextApi = createContext();
 
 const CustomContextProvider = ({ children }) => {
   let [cart, setCart] = useState([]);
+  let [auth, setAuth] = useState(false);
+  let [useDetail, setUserDetail] = useState({ mobileno: "", userid: "" });
   return (
-    <ContextApi.Provider value={{ cart, setCart }}>
+    <ContextApi.Provider
+      value={{ cart, setCart, auth, setAuth, useDetail, setUserDetail }}
+    >
       {children}
     </ContextApi.Provider>
   );

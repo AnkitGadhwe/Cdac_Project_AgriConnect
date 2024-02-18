@@ -14,6 +14,11 @@ import PlantsDetails from "../PlantDetails";
 import Pebbles from "../Pebbles";
 import PageNotFound from "../PageNotFound";
 import Cart from "../Cart";
+import Otp from "../Login/Component/Otp";
+import Login from "../Login/Component/Login";
+import Registeration from "../Login/Component/Registeration";
+import ForgetPassword from "../Login/Component/ForgetPassword";
+import NewPassword from "../Login/Component/NewPassword";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -29,6 +34,11 @@ const AllRoutes = () => {
       <Route path="/contact" element={<Contact />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/pebbles" element={<Pebbles />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/registration" element={<Registeration />} />
+      <Route path="/forgotpassword" element={<ForgetPassword />} />
+      <Route path="/otp" element={<Otp />} />
+      <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/plantsdetails/:pid" element={<PlantsDetails />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>

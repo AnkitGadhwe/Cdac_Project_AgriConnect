@@ -1,12 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import Slideshow from "./Slideshow";
 import style from "../CSS/Home.module.css";
-import f1 from "../Images/Feature/f1.png";
 import f2 from "../Images/Feature/f2.png";
 import f6 from "../Images/Feature/f6.png";
 import { NavLink } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { ContextApi } from "../Context/AgriConnectContext";
+import Login from "../Component/Login/Component/Login";
 
 const Home = () => {
   let [data, setData] = useState([]);

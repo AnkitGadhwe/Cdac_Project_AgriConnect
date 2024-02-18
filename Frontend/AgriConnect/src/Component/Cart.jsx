@@ -15,6 +15,8 @@ const Cart = () => {
 
   console.log(cart);
   const handleQuantity = (item, sym) => {
+    console.log(item, " ", sym);
+
     const updatedCart = cart.map((product) => {
       if (product.pid === item.pid) {
         const updatedQuantity = product.pquantity + sym;

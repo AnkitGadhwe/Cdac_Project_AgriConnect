@@ -28,7 +28,9 @@ const Navbar = () => {
 
         <div className={style.searchDiv}>
           <CiUser size={30} />
-          <button className={style.loginButton}>Login</button>
+          <NavLink to="/login">
+            <button className={style.loginButton}>Login</button>
+          </NavLink>
         </div>
 
         <div className={style.searchDiv}>
