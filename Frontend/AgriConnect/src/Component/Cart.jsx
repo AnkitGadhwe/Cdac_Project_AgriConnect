@@ -31,9 +31,11 @@ const Cart = () => {
   };
   const handlePrice = () => {
     let ans = 0;
-    cart.map((ele) => {
+    cart.forEach((ele) => {
       const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
-      ans += ele.quantity * Price[0].SP;
+      if (Price && Price[0] && Price[0].SP) {
+        ans += ele.quantity * Price[0].SP;
+      }
     });
     setPrice(ans);
     setTax(ans * 0.18);
@@ -102,7 +104,9 @@ const Cart = () => {
 
               return (
                 <div className={style.ProductContainer}>
-                  <img src={images[0].IMG1} alt="error" />
+                  {images && images.length > 0 && (
+                    <img src={images[0].IMG1} alt="error" />
+                  )}
                   <div className={style.PriceTitle}>
                     <h4>{ele.ptitle}</h4>
                     <h3 style={{ margin: "auto" }}>
@@ -176,7 +180,7 @@ const Cart = () => {
               </div>
               <hr />
               <NavLink to="/paymentgateway">
-                <button>Checkout</button>
+                <button class={style.Checkoutbutton}>Checkout</button>
               </NavLink>
             </div>
           </div>

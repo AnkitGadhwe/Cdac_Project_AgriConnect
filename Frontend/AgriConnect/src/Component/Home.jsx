@@ -101,10 +101,10 @@ const Home = () => {
                 </p>
               </button>
             </NavLink>
-            <NavLink to="/plantfood">
+            <NavLink to="/plant">
               {" "}
               <button className={style.PlantFoodPoster5}>
-                <h1>Artifical Plants</h1>
+                <h1>Plants</h1>
                 <p>
                   Synthetic foliage adds a touch of nature to contemporary
                   living spaces.

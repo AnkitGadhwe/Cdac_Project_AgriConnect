@@ -102,3 +102,12 @@
   width: 80%;
   margin: 10px 0px;
 }
+.Checkoutbutton{
+  border: none;
+  width:200px;
+  height:50px;
+  background-color: rgb(255,171,65);
+  margin: auto;
+  cursor: pointer;
+  
+}

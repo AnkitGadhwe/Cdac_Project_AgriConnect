@@ -3,29 +3,22 @@ import { useParams } from "react-router";
 import style from "../CSS/PlantDetail.module.css";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Link, NavLink } from "react-router-dom";
-import "react-responsive-carousel/lib/styles/carousel.min.css"; // requires a loader
+import { Link } from "react-router-dom";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
-import { FaStar } from "react-icons/fa";
-import { FaStarHalfAlt } from "react-icons/fa";
-import { FaPlus } from "react-icons/fa";
-import { FaMinus } from "react-icons/fa";
+import { FaStar, FaStarHalfAlt, FaPlus, FaMinus } from "react-icons/fa";
 import { ContextApi } from "../Context/AgriConnectContext";
 
-const PlantsDetails = () => {
+const PlantsFoodDetails = () => {
   let { pid } = useParams();
   let [data, setData] = useState({});
   let [quantity, setQuantity] = useState(1);
   let [cartObj, setCartObj] = useState(false);
 
   let { cart, setCart } = useContext(ContextApi);
+
   const handleCart = () => {
-    let isPresent = false;
-    cart.forEach((ele) => {
-      if (ele.pid === data.pid) {
-        isPresent = true;
-      }
-    });
+    let isPresent = cart.some((ele) => ele.pfid === data.pfid);
     if (isPresent) {
       console.log("Product is already present");
       setCartObj(true);
@@ -33,26 +26,41 @@ const PlantsDetails = () => {
         setCartObj(false);
       }, 2000);
     } else {
-      data.pquantity = quantity;
-      setCart([data, ...cart]);
+      let newData = { ...data, quantity };
+      setCart([newData, ...cart]);
       console.log(cart);
     }
   };
+
   const getSingleData = async () => {
-    let res = await fetch(`http://localhost:8080/plants/${pid}`);
-    let response = await res.json();
-    setData(response);
-    console.log(response);
+    try {
+      let res = await fetch(`http://localhost:8080/PlantFood/${pid}`);
+      if (!res.ok) {
+        throw new Error("Failed to fetch data");
+      }
+      let response = await res.json();
+      // Parse pfimages from string to array of objects
+      response.pfimages = JSON.parse(response.pfimages);
+      setData(response);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
+
   useEffect(() => {
     getSingleData();
   }, []);
+
   const handleIncrement = () => {
     setQuantity(quantity + 1);
   };
+
   const handleDecrement = () => {
-    setQuantity(quantity - 1);
+    if (quantity > 1) {
+      setQuantity(quantity - 1);
+    }
   };
+
   return (
     <div id={style.ProductDetailParent}>
       <Breadcrumb
@@ -72,31 +80,29 @@ const PlantsDetails = () => {
             Home
           </BreadcrumbLink>
         </BreadcrumbItem>
-
         <BreadcrumbItem>
           <BreadcrumbLink
             as={Link}
-            to="/plant"
+            to="/plantfood"
             fontWeight="500"
             fontSize="23px"
             color="rgb(116,193,20)"
             textDecoration={"none"}
           >
-            Plants
+            PlantsFood
           </BreadcrumbLink>
         </BreadcrumbItem>
-
         <BreadcrumbItem>
           <BreadcrumbLink
             as={Link}
-            to="/plantdetails/:pid"
+            to={`/plantsfooddetails/${pid}`}
             fontWeight="500"
             fontSize="23px"
             color="grey"
             textDecoration={"none"}
             isCurrentPage
           >
-            PlantsDetail
+            PlantsFoodDetail
           </BreadcrumbLink>
         </BreadcrumbItem>
       </Breadcrumb>
@@ -104,54 +110,24 @@ const PlantsDetails = () => {
       <div className={style.ProductDetailChild}>
         <div className={style.LeftSection}>
           <Carousel className={style.Carousel}>
-            <div>
-              <img
-                src={
-                  data.pimages && data.pimages.length > 0
-                    ? JSON.parse(data.pimages)[0].IMG1
-                    : ""
-                }
-                alt="Product"
-              />
-            </div>
-            <div>
-              <img
-                src={
-                  data.pimages && data.pimages.length > 0
-                    ? JSON.parse(data.pimages)[0].IMG2
-                    : ""
-                }
-                alt="Product"
-              />
-            </div>
-            <div>
-              <img
-                src={
-                  data.pimages && data.pimages.length > 0
-                    ? JSON.parse(data.pimages)[0].IMG3
-                    : ""
-                }
-                alt="Product"
-              />
-            </div>
+            {data.pfimages &&
+              data.pfimages.map((image, index) => (
+                <div key={index}>
+                  <img src={image.IMG1} alt={`Product ${index + 1}`} />
+                </div>
+              ))}
           </Carousel>
         </div>
 
         <div className={style.RightSection}>
-          <h2>{data.ptitle}</h2>
+          <h2>{data.pftitle}</h2>
           <div className={style.Sale}>
             <p>sale</p>
             <h2 className={style.Saleh2}>
-              Rs.
-              {data.pprice && data.pprice.length > 0
-                ? JSON.parse(data.pprice)[0].MP
-                : ""}
+              Rs. {data.pfprice && JSON.parse(data.pfprice)[0].MP}
             </h2>
             <h2 style={{ color: "rgb(77,169,71)" }}>
-              Rs.{" "}
-              {data.pprice && data.pprice.length > 0
-                ? JSON.parse(data.pprice)[0].SP
-                : ""}
+              Rs. {data.pfprice && JSON.parse(data.pfprice)[0].SP}
             </h2>
           </div>
           <div className={style.Rating}>
@@ -160,9 +136,9 @@ const PlantsDetails = () => {
             <FaStar color="rgb(246,195,71)" />
             <FaStar color="rgb(246,195,71)" />
             <FaStarHalfAlt color="rgb(246,195,71)" />
-            <p>{data.prating}</p>
+            <p>{data.pfrating}</p>
           </div>
-          <p>{data.pdescription}</p>
+          <p>{data.pfdescription}</p>
 
           <div className={style.QuantityCart}>
             <div className={style.Quantity}>
@@ -177,7 +153,6 @@ const PlantsDetails = () => {
                 </button>
               </div>
             </div>
-
             <div className={style.Cart}>
               <button onClick={handleCart}>Add to Cart</button>
             </div>
@@ -185,13 +160,9 @@ const PlantsDetails = () => {
           {cartObj && (
             <div style={{ color: "red" }}>Item already available in cart</div>
           )}
-
-          <NavLink to="/paymentgateway">
-            <button className={style.BuyNow}>
-              <h2>Buy It Now</h2>
-            </button>
-          </NavLink>
-
+          <button className={style.BuyNow}>
+            <h2>Buy It Now</h2>
+          </button>
           <div className={style.PlantInformation}>
             <div className={style.Infocontainer}>
               <img
@@ -260,4 +231,4 @@ const PlantsDetails = () => {
   );
 };
 
-export default PlantsDetails;
+export default PlantsFoodDetails;

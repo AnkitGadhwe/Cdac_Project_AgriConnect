@@ -63,15 +63,11 @@ const Navbar = () => {
         <NavLink className={style.link} to="/potplants">
           PotPlants
         </NavLink>
-        <NavLink className={style.link} to="/seedbulbs">
-          Seeds&Bulbs
-        </NavLink>
+
         <NavLink className={style.link} to="/plantfood">
           PlantsFood
         </NavLink>
-        <NavLink className={style.link} to="/artificialpants">
-          ArtificialPlants
-        </NavLink>
+
         <NavLink className={style.link} to="/pumpspray">
           Pump&Sprays
         </NavLink>

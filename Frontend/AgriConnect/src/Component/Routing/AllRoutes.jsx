@@ -22,7 +22,7 @@ import NewPassword from "../Login/Component/NewPassword";
 import PaymentGateway from "../PaymentGateway";
 import Final from "../Final";
 import PotPlantsDetail from "../PotPlantsDetail";
-
+import PlantsFoodDetail from "../PlantsFoodDetail";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -46,6 +46,7 @@ const AllRoutes = () => {
       <Route path="/newpassword" element={<NewPassword />} />
       <Route path="/plantsdetails/:pid" element={<PlantsDetails />} />
       <Route path="/potplantsdetails/:pid" element={<PotPlantsDetail />} />
+      <Route path="/plantsfooddetails/:pid" element={<PlantsFoodDetail />} />
       <Route path="/paymentgateway" element={<PaymentGateway />} />
       <Route path="*" element={<PageNotFound />} />
     </Routes>
