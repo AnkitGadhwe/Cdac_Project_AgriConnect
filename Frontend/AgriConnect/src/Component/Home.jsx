@@ -32,7 +32,7 @@ const Home = () => {
     }
   };
   const getAllData = async () => {
-    let res = await fetch("http://localhost:8080/plants/load?offset=3&limit=5");
+    let res = await fetch("http://localhost:8080/plants/load?offset=6&limit=5");
     let response = await res.json();
     setData(response);
     console.log(response);

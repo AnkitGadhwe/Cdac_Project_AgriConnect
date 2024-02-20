@@ -71,12 +71,7 @@ const Navbar = () => {
         <NavLink className={style.link} to="/pumpspray">
           Pump&Sprays
         </NavLink>
-        <NavLink className={style.link} to="/plantcare">
-          PlantCare
-        </NavLink>
-        <NavLink className={style.link} to="/aboutus">
-          AboutUs
-        </NavLink>
+
         <NavLink className={style.link} to="/contact">
           Contact
         </NavLink>

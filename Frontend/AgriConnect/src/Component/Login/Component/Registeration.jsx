@@ -1,7 +1,6 @@
 import React, { useState } from "react";
-// import { myFunction } from "./Reg";
-
-function Registeration() {
+import style from "../CSS/Registration.module.css";
+const Registration = () => {
   const [formData, setFormData] = useState({
     Firstname: "",
     Lastname: "",
@@ -13,7 +12,7 @@ function Registeration() {
     WhatsApp_Number: "",
     UserPassword: "",
   });
-
+  const [warning, setWarning] = useState(false);
   const [userId, setUserId] = useState("");
   const [error, setError] = useState("");
   const [mob, setMob] = useState(0);
@@ -44,6 +43,10 @@ function Registeration() {
         if (data.startsWith("Registration_Failed")) {
           setError(data);
           setUserId("");
+          setWarning(true);
+          setTimeout(() => {
+            setWarning(false);
+          }, 2000);
         } else {
           setError("");
           setUserId(data);
@@ -56,121 +59,141 @@ function Registeration() {
         setError("An error occurred while processing your request.");
         setUserId("");
       });
+    setFormData({
+      Firstname: "",
+      Lastname: "",
+      EMailid: "",
+      Address: "",
+      Pincode: "",
+      State: "",
+      Gender: "",
+      WhatsApp_Number: "",
+      UserPassword: "",
+    });
   };
 
   return (
-    <div>
-      <h2>Data Upload Form</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          First Name:
+    <div className={style.LoginContainer}>
+      <h1 style={{ marginTop: "10px", marginBottom: "10px" }}>Registration</h1>
+      <form onSubmit={handleSubmit} className={style.formContainer}>
+        <div className={style.inputLabel}>
+          <label for="firstname">First Name:</label>
           <input
-            type="text"
-            name="Firstname"
             value={formData.Firstname}
             onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Last Name:
-          <input
             type="text"
-            name="Lastname"
+            id="firstname"
+            required
+            name="Firstname"
+            pattern="^[A-Z][a-zA-Z]+$"
+            title="Name must begin with upperCase letter"
+          />
+        </div>
+        <div className={style.inputLabel}>
+          <label for="lastname">Last Name:</label>
+          <input
             value={formData.Lastname}
             onChange={handleChange}
+            type="text"
+            id="lastname"
             required
+            name="Lastname"
+            pattern="^[A-Z][a-zA-Z]+$"
+            title="Name must begin with upperCase letter"
           />
-        </label>
-        <br />
-        <label>
-          Email:
+        </div>
+        <div className={style.inputLabel}>
+          <label for="email">EmailId:</label>
           <input
-            type="email"
-            name="EMailid"
             value={formData.EMailid}
             onChange={handleChange}
+            type="email"
+            id="email"
             required
+            name="EMailid"
+            pattern="^[^@]+@(gmail|yahoo)\.com$"
+            title="Please enter valid email"
           />
-        </label>
-        <br />
-        <label>
-          Address:
+        </div>
+        <div className={style.inputLabel}>
+          <label for="address">Address:</label>
           <input
-            type="text"
-            name="Address"
             value={formData.Address}
             onChange={handleChange}
-            required
-          />
-        </label>
-        <br />
-        <label>
-          Pincode:
-          <input
             type="text"
-            name="Pincode"
+            id="address"
+            required
+            name="Address"
+          />
+        </div>
+        <div className={style.inputLabel}>
+          <label for="pincode">PinCode:</label>
+          <input
             value={formData.Pincode}
             onChange={handleChange}
+            type="text"
+            id="pincode"
             required
+            name="Pincode"
+            pattern="^[1-9][0-9]{5}$"
+            title="Enter a valid 6 digit pincode"
           />
-        </label>
-        <br />
-        <label>
-          State:
+        </div>
+        <div className={style.inputLabel}>
+          <label for="state">State:</label>
           <input
             type="text"
+            id="state"
+            required
             name="State"
             value={formData.State}
             onChange={handleChange}
-            required
           />
-        </label>
-        <br />
-        <label>
-          Gender:
-          <select
-            name="Gender"
-            value={formData.Gender}
-            onChange={handleChange}
-            required
-          >
+        </div>
+        <div className={style.inputLabel}>
+          <label for="gender">Select Gender:</label>
+          <select name="Gender" value={formData.Gender} onChange={handleChange}>
+            Select Gender :<option value="select gender"> Select Gender</option>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
             <option value="Other">Other</option>
           </select>
-        </label>
-        <br />
-        <label>
-          WhatsApp Number:
+        </div>
+        <div className={style.inputLabel}>
+          <label for="whatappnumber">Whatappnumber:</label>
           <input
-            type="text"
             name="WhatsApp_Number"
             value={formData.WhatsApp_Number}
             onChange={handleChange}
+            type="number"
+            id="whatappnumber"
             required
+            pattern="^[6-9]\d{9}$"
+            title="Please enter a valid indian mobile number"
           />
-        </label>
-        <br />
-        <label>
-          Password:
+        </div>
+        <div className={style.inputLabel}>
+          <label for="password">Password:</label>
           <input
-            type="password"
             name="UserPassword"
             value={formData.UserPassword}
             onChange={handleChange}
+            type="password"
+            id="password"
+            pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$"
+            title="Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and have a minimum length of 8 characters."
             required
+            placeholder="Password"
           />
-        </label>
-        <br />
-        <br />
-        <input type="submit" value="Submit" />
+        </div>
+        <button>Register</button>
       </form>
-      {error && <p>{error}</p>}
-      {userId && <p>User ID: {userId}</p>}
+      <div>
+        {warning ? error && <p>{error}</p> : ""}
+        {userId && <p>User ID: {userId}</p>}
+      </div>
     </div>
   );
-}
+};
 
-export default Registeration;
+export default Registration;

@@ -2,6 +2,7 @@ import React, { useState, useContext } from "react";
 import { myFunction } from "./Sendotp";
 import { NavLink, useNavigate } from "react-router-dom";
 import { ContextApi } from "../../../Context/AgriConnectContext";
+import style from "../CSS/ForgetPassword.module.css";
 const ForgetPassword = () => {
   let [state, setState] = useState({ contact: "", userid: "" });
   let { useDetail, setUserDetail } = useContext(ContextApi);
@@ -29,24 +30,34 @@ const ForgetPassword = () => {
     }
   };
   return (
-    <div>
-      <form onSubmit={handleSubmit}>
-        mobile
-        <input
-          type="number"
-          placeholder="mobile"
-          onChange={handleChange}
-          name="contact"
-        />
-        userid
-        <input
-          type="text"
-          placeholder="user id"
-          onChange={handleChange}
-          name="userid"
-        />
-        <button>Send Otp</button>
-      </form>
+    <div className={style.LoginContainer}>
+      <div className={style.formContainer}>
+        <h1 style={{ marginTop: "5px", marginBottom: "20px" }}>
+          Forget Password
+        </h1>
+        <form onSubmit={handleSubmit}>
+          <div className={style.inputLabel}>
+            <label for="mobile"> Mobile:</label>
+            <input
+              id="mobile"
+              type="number"
+              placeholder="mobile"
+              onChange={handleChange}
+              name="contact"
+            />
+          </div>
+          <div className={style.inputLabel}>
+            <label>User ID:</label>
+            <input
+              type="text"
+              placeholder="user id"
+              onChange={handleChange}
+              name="userid"
+            />
+          </div>
+          <button>Send Otp</button>
+        </form>
+      </div>
     </div>
   );
 };

@@ -44,7 +44,7 @@ function PaymentGateway() {
 
     if (isFormValid(newWarnings)) {
       // Redirect or perform action
-      navigate("/");
+      navigate("/final");
     }
     console.log(cardNumber);
     console.log(cardHolder);
@@ -219,9 +219,7 @@ function PaymentGateway() {
             </div>
           </div>
 
-          <NavLink to="/final">
-            <button className="submit-btn">Submit</button>
-          </NavLink>
+          <button className="submit-btn">Submit</button>
         </form>
       </div>
       <div class="img">
