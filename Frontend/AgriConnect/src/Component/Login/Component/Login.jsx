@@ -31,6 +31,7 @@ const Login = () => {
     console.log(response);
     console.log(formData);
     if (response) {
+      localStorage.setItem("userid", formData.username);
       navigate("/");
       setAuth(true);
     } else {
@@ -49,53 +50,55 @@ const Login = () => {
   };
 
   return (
-    <div className={style.LoginContainer}>
-      <FaUserCircle size={"40px"} />
-      <h1 style={{ marginTop: "5px" }}>LOGIN</h1>
-      <div className={style.formContainer}>
-        <form onSubmit={handleSubmit}>
-          <div className={style.inputLabel}>
-            <label for="user_id"> User Name</label>
-            <input
-              type="text"
-              id="user_id"
-              name="username"
-              required
-              placeholder="User Id"
-              value={formData.username}
-              onChange={handleChange}
-            />
-          </div>
-          <div className={style.inputLabel}>
-            <label for="password">Password:</label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$"
-              title="Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and have a minimum length of 8 characters."
-              required
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-            />
-          </div>
-          <button>Submit</button>
-        </form>
-        {invalid ? (
-          <h4 style={{ color: "red", textAlign: "center" }}>
-            Invalid Crendential
-          </h4>
-        ) : (
-          ""
-        )}
-      </div>
-      <div className={style.Link}>
-        <div>
-          <NavLink to="/registration">Registration</NavLink>
+    <div className={style.ParentLogin}>
+      <div className={style.LoginContainer}>
+        <FaUserCircle size={"40px"} />
+        <h1 style={{ marginTop: "5px", marginBottom: "10px" }}>LOGIN</h1>
+        <div className={style.formContainer}>
+          <form onSubmit={handleSubmit}>
+            <div className={style.inputLabel}>
+              <label for="user_id"> User ID:</label>
+              <input
+                type="text"
+                id="user_id"
+                name="username"
+                required
+                placeholder="User Id"
+                value={formData.username}
+                onChange={handleChange}
+              />
+            </div>
+            <div className={style.inputLabel}>
+              <label for="password">Password:</label>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$"
+                title="Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and have a minimum length of 8 characters."
+                required
+                placeholder="Password"
+                value={formData.password}
+                onChange={handleChange}
+              />
+            </div>
+            <button>Submit</button>
+          </form>
+          {invalid ? (
+            <h4 style={{ color: "red", textAlign: "center" }}>
+              Invalid Crendential
+            </h4>
+          ) : (
+            ""
+          )}
         </div>
-        <div>
-          <NavLink to="/forgotpassword">Forget Password</NavLink>
+        <div className={style.Link}>
+          <div>
+            <NavLink to="/registration">Registration</NavLink>
+          </div>
+          <div>
+            <NavLink to="/forgotpassword">Forget Password</NavLink>
+          </div>
         </div>
       </div>
     </div>

@@ -14,13 +14,17 @@ export const myFunction = async (mobileno, userId) => {
           method: "POST",
           headers: { "Content-Type": "application/json" }, // Updated content type
           body: JSON.stringify({
-            token: "o0i02ea0mew4qrch",
+            token: "j2bxufgynnbky3r1",
             to: mobileno, // Ensure the 'to' field is correctly provided
-            body: "Your OTP is " + otp,
+            body: `Hello !!
+            You've requested a password reset for your AgriConnect account. Your One-Time Password (OTP) is:${otp} This code is valid for 5 minutes. If you didn't make this request, please ignore this message.
+            For security reasons, do not share this OTP with anyone, including AgriConnect support. 
+            Thank you,
+            AgriConnect Support Team`
           }),
         };
   
-        const smsResponse = await fetch("https://api.ultramsg.com/instance78387/messages/chat?token=o0i02ea0mew4qrch", options);
+        const smsResponse = await fetch("https://api.ultramsg.com/instance78859/messages/chat?token=j2bxufgynnbky3r1", options);
         if (!smsResponse.ok) {
           throw new Error(`Failed to send SMS: ${smsResponse.status} ${smsResponse.statusText}`);
         }

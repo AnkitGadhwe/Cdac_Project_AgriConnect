@@ -44,24 +44,45 @@ const PotPlants = () => {
   };
 
   const handleClick = (element) => {
-    let isPresent = false;
-    cart.forEach((ele) => {
-      if (ele.ppid === element.ppid) {
-        isPresent = true;
-      }
-    });
-    if (isPresent) {
-      console.log("Product is already present");
+    const productAlreadyInCart = cart.find((item) => item.pid === element.ppid);
+
+    if (productAlreadyInCart) {
       setWarning(true);
       setTimeout(() => {
         setWarning(false);
       }, 2000);
     } else {
-      setCart([element, ...cart]);
-      console.log(cart);
+      // If the product is not in the cart, proceed to add it
+      const images = JSON.parse(element.ppimages);
+      const price = JSON.parse(element.ppprice);
+      const productToAdd = {
+        pid: element.ppid,
+        ptitle: element.pptitle,
+        pimage: images[0].IMG1,
+        pprice: price[0].SP,
+        qty: 1,
+      };
+      addProductToCart(productToAdd);
+      setWarning(false); // Reset warning state
     }
   };
+  const addProductToCart = async (product) => {
+    try {
+      const queryString = `?pid=${product.pid}&ptitle=${product.ptitle}&pprice=${product.pprice}&pimage=${product.pimage}&qty=${product.qty}`;
+      const response = await fetch(
+        `http://localhost:8080/Add_TO_Cart${queryString}`
+      );
 
+      if (response.ok) {
+        console.log("Product added to cart successfully");
+        setCart([...cart, product]);
+      } else {
+        console.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
   const getAllData = async (pageno) => {
     let res = await fetch(
       `http://localhost:8080/pot_planters/load?offset=${pageno}&limit=12`

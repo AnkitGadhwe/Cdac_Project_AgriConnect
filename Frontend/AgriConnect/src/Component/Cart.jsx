@@ -3,56 +3,183 @@ import { ContextApi } from "../Context/AgriConnectContext";
 import style from "../CSS/Cart.module.css";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FaPlus } from "react-icons/fa";
 import { FaMinus } from "react-icons/fa";
 import { NavLink } from "react-router-dom";
+
 const Cart = () => {
-  let [price, setPrice] = useState(0);
-  let [subTotal, setSubTotal] = useState(0);
-  let [tax, setTax] = useState(0);
+  const [price, setPrice] = useState(0);
+  const [tax, setTax] = useState(0);
+  const [productCart, setProductCart] = useState([]);
+  const [subTotal, setSubTotal] = useState(0);
+  let { auth } = useContext(ContextApi);
+  let { setCart } = useContext(ContextApi);
+  let navigate = useNavigate();
 
-  let { cart, setCart } = useContext(ContextApi);
-
-  console.log(cart);
-  const handleQuantity = (item, sym) => {
-    console.log(item, " ", sym);
-
-    const updatedCart = cart.map((product) => {
-      if (product.pid === item.pid) {
-        const updatedQuantity = product.quantity + sym;
-
-        return { ...product, quantity: updatedQuantity };
+  const getProductFromCart = async () => {
+    try {
+      const data = await fetch(`http://localhost:8080/ShowCart`);
+      if (data.ok) {
+        const cart = await data.json();
+        setProductCart(cart);
+        calculateSubTotal(cart);
+      } else {
+        console.error("Failed to fetch product cart");
       }
-      return product;
-    });
+    } catch (error) {
+      console.error("Error fetching product cart:", error);
+    }
+  };
 
-    setCart(updatedCart);
-  };
-  const handlePrice = () => {
-    let ans = 0;
-    cart.forEach((ele) => {
-      const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
-      if (Price && Price[0] && Price[0].SP) {
-        ans += ele.quantity * Price[0].SP;
+  const getProductFromCart1 = async () => {
+    try {
+      const data = await fetch(`http://localhost:8080/ShowCart`);
+      if (data.ok) {
+        const cart = await data.json();
+        const mappedProducts = cart.map((item) => ({
+          pid: item.pid,
+          ptitle: item.ptitle,
+          pprice: item.pprice,
+          qty: item.qty,
+        }));
+        setProductCart(mappedProducts);
+        calculateSubTotal(mappedProducts);
+      } else {
+        console.error("Failed to fetch product cart");
       }
-    });
-    setPrice(ans);
-    setTax(ans * 0.18);
+    } catch (error) {
+      console.error("Error fetching product cart:", error);
+    }
   };
+
   const handleTotal = () => {
-    let val = price + tax + 100;
-    setSubTotal(val);
+    const total = price + tax + 100;
+    setSubTotal(total);
   };
-  const handleRemove = (id) => {
-    const arr = cart.filter((ele) => ele.pid !== id);
-    setCart(arr);
+
+  const calculateSubTotal = (productCart) => {
+    let total = 0;
+    productCart.forEach((product) => {
+      const Price = product.pprice ? JSON.parse(product.pprice) : null;
+      if (Price) {
+        total += product.qty * Price;
+      }
+    });
+    setPrice(total);
+    setTax(total * 0.18);
+    const shippingCost = 100;
+    const subTotal = total + total * 0.18 + shippingCost;
+    setSubTotal(subTotal);
+  };
+  const handleRemove = async (pid) => {
+    try {
+      const data = await fetch(`http://localhost:8080/DeleteProduct/${pid}`);
+      if (data.ok) {
+        await getProductFromCart();
+      } else {
+        console.error("Failed to remove product from cart");
+      }
+    } catch (error) {
+      console.error("Error removing product:", error);
+    }
+  };
+
+  const handleQuantity = async (product, change) => {
+    const updatedQuantity = product.qty + change;
+
+    if (updatedQuantity < 1) return;
+
+    try {
+      const response = await fetch(
+        `http://localhost:8080/ChangeQuantity/${product.pid}/${updatedQuantity}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+      if (response.ok) {
+        await getProductFromCart();
+      } else {
+        console.error("Failed to update quantity of product");
+      }
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+    }
+  };
+
+  const handleCheckout = async (auth) => {
+    if (!productCart || productCart.length === 0) {
+      alert("Your cart is empty");
+      return;
+    }
+
+    try {
+      // Call getProductFromCart1 to update productCart state
+      await getProductFromCart1();
+      let usert = localStorage.getItem("userid");
+      let token = generateRandomCode(7);
+
+      // Prepare data for the query parameters
+      const queryParams = new URLSearchParams();
+      productCart.forEach((item) => {
+        queryParams.append("PID", item.pid);
+        queryParams.append("UPrice", item.pprice);
+        queryParams.append("UQuantity", item.qty);
+      });
+      queryParams.append(
+        "subtotal",
+        productCart
+          .reduce(
+            (total, item) => total + parseFloat(item.pprice) * item.qty,
+            0
+          )
+          .toFixed(2)
+      );
+      queryParams.append("uid", usert);
+      queryParams.append("token", token);
+
+      // Make GET request with the constructed URL
+      const response = await fetch(
+        `http://localhost:8080/OrderInsert?${queryParams.toString()}`
+      );
+
+      if (response) {
+        if (auth) {
+          navigate("/paymentgateway");
+        } else {
+          navigate("/login");
+        }
+      } else {
+        console.error("Failed to insert order");
+      }
+    } catch (error) {
+      console.error("Failed to add items to cart or navigate:", error);
+      // Handle error, display message to the user, etc.
+    }
+  };
+  const generateRandomCode = (length) => {
+    const characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let result = "";
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(
+        Math.floor(Math.random() * characters.length)
+      );
+    }
+    return result;
   };
 
   useEffect(() => {
-    handlePrice();
+    getProductFromCart();
+  }, []);
+
+  useEffect(() => {
     handleTotal();
-  }, [handleRemove, handleTotal]);
+    setCart(productCart);
+  }, [price, tax]);
 
   return (
     <div id={style.CartParent}>
@@ -91,41 +218,40 @@ const Cart = () => {
 
       <h1>Your Shopping Cart</h1>
       <div className={style.CartChild}>
-        {cart.length === 0 ? (
+        {productCart.length === 0 ? (
           <h1 style={{ color: " rgb(116,193,20)" }}>
             Cart is Empty please Add Plants
           </h1>
         ) : (
           <div className={style.LeftSection}>
-            {cart.map((ele, ind) => {
-              const images = ele.ppimages ? JSON.parse(ele.ppimages) : null;
-
+            {productCart.map((ele, ind) => {
+              const images = ele.ppimages;
               const Price = ele.pprice ? JSON.parse(ele.pprice) : null;
 
               return (
-                <div className={style.ProductContainer}>
+                <div className={style.ProductContainer} key={ind}>
                   {images && images.length > 0 && (
-                    <img src={images[0].IMG1} alt="error" />
+                    <img src={images} alt="error" />
                   )}
                   <div className={style.PriceTitle}>
                     <h4>{ele.ptitle}</h4>
                     <h3 style={{ margin: "auto" }}>
                       {" "}
-                      Price Rs. {Price[0].MP} Rs.<span>{Price[0].SP}</span>
+                      Price Rs.<span>{Price}</span>
                     </h3>
                   </div>
                   <div style={{ marginTop: "35px" }}>
                     <h5 style={{ color: "grey" }}>Quantity</h5>
                     <div className={style.Quantity}>
                       <button
-                        disabled={ele.quantity === 1}
+                        disabled={ele.qty === 1}
                         onClick={() => {
                           handleQuantity(ele, -1);
                         }}
                       >
                         <FaMinus />
                       </button>
-                      <button>{ele.quantity}</button>
+                      <button>{ele.qty}</button>
                       <button
                         onClick={() => {
                           handleQuantity(ele, +1);
@@ -135,7 +261,7 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-                  <h4>Rs. {ele.quantity * Price[0].SP}</h4>
+                  <h4>Rs. {ele.qty * Price}</h4>
                   <button
                     onClick={() => {
                       handleRemove(ele.pid);
@@ -149,7 +275,7 @@ const Cart = () => {
             })}
           </div>
         )}
-        {cart.length === 0 ? (
+        {productCart.length === 0 ? (
           ""
         ) : (
           <div className={style.RightSection}>
@@ -179,9 +305,10 @@ const Cart = () => {
                 <h5>Rs. {subTotal}</h5>
               </div>
               <hr />
-              <NavLink to="/paymentgateway">
-                <button class={style.Checkoutbutton}>Checkout</button>
-              </NavLink>
+
+              <button className={style.Checkoutbutton} onClick={handleCheckout}>
+                Checkout
+              </button>
             </div>
           </div>
         )}

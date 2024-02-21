@@ -10,7 +10,7 @@ const PriceRangeSlider = ({ minPrice, maxPrice, onRangeChange }) => {
     onRangeChange(newRange);
   };
   const trackStyle = {
-    backgroundColor: "rgb(116, 193, 20)",
+    backgroundColor: "rgb(48,90,54)",
   };
   return (
     <div className={style.price_range_slider}>

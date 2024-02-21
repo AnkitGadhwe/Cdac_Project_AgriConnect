@@ -11,31 +11,64 @@ const Home = () => {
   let [data, setData] = useState([]);
   let [warning, setWarning] = useState(false);
   let { cart, setCart } = useContext(ContextApi);
-  // console.log(cart);
-  const handleClick = (element) => {
-    let isPresent = false;
 
-    cart.forEach((ele) => {
-      if (ele.pid === element.pid) {
-        isPresent = true;
-      }
-    });
-    if (isPresent) {
+  const handleClick = (element) => {
+    // Check if the product is already in the cart
+    const productAlreadyInCart = cart.find((item) => item.pid === element.pid);
+
+    if (productAlreadyInCart) {
       setWarning(true);
       setTimeout(() => {
         setWarning(false);
       }, 2000);
-      console.log("Product is already present");
     } else {
-      setCart([element, ...cart]);
-      console.log(cart);
+      // If the product is not in the cart, proceed to add it
+      const images = JSON.parse(element.pimages);
+      const price = JSON.parse(element.pprice);
+      const productToAdd = {
+        pid: element.pid,
+        ptitle: element.ptitle,
+        pimage: images[0].IMG1,
+        pprice: price[0].SP,
+        qty: 1,
+      };
+      addProductToCart(productToAdd);
+      setWarning(false); // Reset warning state
     }
   };
+
+  const addProductToCart = async (product) => {
+    try {
+      const queryString = `?pid=${product.pid}&ptitle=${product.ptitle}&pprice=${product.pprice}&pimage=${product.pimage}&qty=${product.qty}`;
+      const response = await fetch(
+        `http://localhost:8080/Add_TO_Cart${queryString}`
+      );
+
+      if (response.ok) {
+        console.log("Product added to cart successfully");
+        setCart([...cart, product]);
+      } else {
+        console.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+    }
+  };
+
   const getAllData = async () => {
-    let res = await fetch("http://localhost:8080/plants/load?offset=6&limit=5");
-    let response = await res.json();
-    setData(response);
-    console.log(response);
+    try {
+      const res = await fetch(
+        "http://localhost:8080/plants/load?offset=6&limit=5"
+      );
+      if (res.ok) {
+        const response = await res.json();
+        setData(response);
+      } else {
+        throw new Error("Failed to fetch data");
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   };
 
   useEffect(() => {

@@ -7,11 +7,11 @@ const Pagination = ({ HandleIncrement, HandleDecrement, page }) => {
   return (
     <div id={style.Pagination}>
       <button onClick={HandleDecrement} disabled={page <= 1}>
-        <TbPlayerTrackPrevFilled />
+        <TbPlayerTrackPrevFilled color="rgb(48,90,54)" />
       </button>
-      <button>{page}</button>
+      {/* <button>{page}</button> */}
       <button onClick={HandleIncrement} disabled={page == 8}>
-        <TbPlayerTrackNextFilled />
+        <TbPlayerTrackNextFilled color="rgb(48,90,54)" />
       </button>
     </div>
   );

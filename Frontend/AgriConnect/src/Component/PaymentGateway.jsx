@@ -4,7 +4,7 @@ import payment from "../Images/payment.jpg";
 import chip from "../Images/chip.png";
 import visa from "../Images/visa.png";
 import { NavLink, useNavigate } from "react-router-dom";
-
+ 
 function PaymentGateway() {
   const [cardNumber, setCardNumber] = useState("");
   const [cardHolder, setCardHolder] = useState("");
@@ -45,6 +45,7 @@ function PaymentGateway() {
     if (isFormValid(newWarnings)) {
       // Redirect or perform action
       navigate("/final");
+      
     }
     console.log(cardNumber);
     console.log(cardHolder);

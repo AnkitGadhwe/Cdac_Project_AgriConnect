@@ -44,21 +44,43 @@ const Plants = () => {
   };
 
   const handleClick = (element) => {
-    let isPresent = false;
-    cart.forEach((ele) => {
-      if (ele.pid === element.pid) {
-        isPresent = true;
-      }
-    });
-    if (isPresent) {
-      console.log("Product is already present");
+    const productAlreadyInCart = cart.find((item) => item.pid === element.pid);
+
+    if (productAlreadyInCart) {
       setWarning(true);
       setTimeout(() => {
         setWarning(false);
       }, 2000);
     } else {
-      setCart([element, ...cart]);
-      console.log(cart);
+      // If the product is not in the cart, proceed to add it
+      const images = JSON.parse(element.pimages);
+      const price = JSON.parse(element.pprice);
+      const productToAdd = {
+        pid: element.pid,
+        ptitle: element.ptitle,
+        pimage: images[0].IMG1,
+        pprice: price[0].SP,
+        qty: 1,
+      };
+      addProductToCart(productToAdd);
+      setWarning(false); // Reset warning state
+    }
+  };
+  const addProductToCart = async (product) => {
+    try {
+      const queryString = `?pid=${product.pid}&ptitle=${product.ptitle}&pprice=${product.pprice}&pimage=${product.pimage}&qty=${product.qty}`;
+      const response = await fetch(
+        `http://localhost:8080/Add_TO_Cart${queryString}`
+      );
+
+      if (response.ok) {
+        console.log("Product added to cart successfully");
+        setCart([...cart, product]);
+      } else {
+        console.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
     }
   };
 
@@ -170,7 +192,7 @@ const Plants = () => {
             <BreadcrumbLink
               fontWeight="500"
               fontSize="23px"
-              color="rgb(116,193,20)"
+              color="rgb(200,167,84)"
               textDecoration={"none"}
               as={Link}
               to="/"
@@ -193,7 +215,7 @@ const Plants = () => {
             </BreadcrumbLink>
           </BreadcrumbItem>
         </Breadcrumb>
-        <h1>Plants</h1>
+        <h1 style={{ marginTop: "5px", color: "rgb(48,90,54)" }}>Plants</h1>
       </div>
       <section id={style.childContainerPlants}>
         <div className={style.leftChildSection}>
@@ -202,7 +224,7 @@ const Plants = () => {
             <h4
               style={{
                 fontSize: "25px",
-                color: "rgb(105,190,99)",
+                color: "rgb(200,167,84)",
                 marginBottom: "10px",
               }}
             >
@@ -218,7 +240,7 @@ const Plants = () => {
               <h4
                 style={{
                   fontSize: "25px",
-                  color: "rgb(105,190,99)",
+                  color: "rgb(200,167,84)",
                   marginBottom: "10px",
                 }}
               >
@@ -250,7 +272,7 @@ const Plants = () => {
               <h4
                 style={{
                   fontSize: "25px",
-                  color: "rgb(105,190,99)",
+                  color: "rgb(200,167,84)",
                   marginBottom: "10px",
                   marginTop: "30px",
                 }}
@@ -325,7 +347,7 @@ const Plants = () => {
                 <option>Price, High-Low</option>
               </select>
             </div>
-            <div style={{ display: "flex", flexDirection: "row", gap: "15px" }}>
+            {/* <div style={{ display: "flex", flexDirection: "row", gap: "15px" }}>
               <p>View as</p>
               <button>
                 <GoListUnordered size={25} />
@@ -333,7 +355,7 @@ const Plants = () => {
               <button>
                 <MdOutlineGridView size={25} />
               </button>
-            </div>
+            </div> */}
           </div>
           <div>
             {data.length === 0 ? (

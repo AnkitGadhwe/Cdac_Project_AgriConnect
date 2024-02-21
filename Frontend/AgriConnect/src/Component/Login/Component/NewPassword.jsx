@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import style from "../CSS/NewPassword.module.css";
 
 const NewPassword = () => {
   const [newPassword, setNewPassword] = useState("");
@@ -35,70 +36,75 @@ const NewPassword = () => {
   };
 
   return (
-    <div
-      style={{
-        width: "300px",
-        margin: "auto",
-        padding: "20px",
-        border: "1px solid #ccc",
-        borderRadius: "5px",
-      }}
-    >
-      <h2>Update Password</h2>
-      <form
-        onSubmit={handleUpdatePassword}
-        style={{ display: "flex", flexDirection: "column" }}
+    <div className={style.ParentNP}>
+      <div
+        style={{
+          width: "300px",
+          margin: "auto",
+          padding: "20px",
+          border: "1px solid #ccc",
+          borderRadius: "5px",
+          marginTop: "30px",
+          marginBottom: "30px",
+        }}
       >
-        <label style={{ marginBottom: "10px" }}>
-          New Password:
-          <input
-            type="password"
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            style={{
-              marginBottom: "10px",
-              padding: "5px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-            }}
-          />
-        </label>
-        <label style={{ marginBottom: "10px" }}>
-          User ID:
-          <input
-            type="text"
-            value={userId}
-            onChange={(e) => setUserId(e.target.value)}
-            style={{
-              marginBottom: "10px",
-              padding: "5px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-            }}
-          />
-        </label>
-        <button
-          type="submit"
-          style={{
-            padding: "10px",
-            backgroundColor: "#007bff",
-            color: "#fff",
-            border: "none",
-            borderRadius: "5px",
-            cursor: "pointer",
-            transition: "background-color 0.3s ease",
-          }}
+        <h2>Update Password</h2>
+        <form
+          onSubmit={handleUpdatePassword}
+          style={{ display: "flex", flexDirection: "column" }}
         >
-          Update Password
-        </button>
-      </form>
-      {response !== null && (
-        <p>
-          {response
-            ? "Password updated successfully"
-            : "Failed to update password. Please try again"}
-        </p>
-      )}
+          <label style={{ marginBottom: "10px" }}>
+            New Password:
+            <input
+              type="password"
+              pattern="^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </label>
+          <label style={{ marginBottom: "10px" }}>
+            User ID:
+            <input
+              type="text"
+              value={userId}
+              onChange={(e) => setUserId(e.target.value)}
+              style={{
+                marginBottom: "10px",
+                padding: "5px",
+                border: "1px solid #ccc",
+                borderRadius: "5px",
+              }}
+            />
+          </label>
+          <button
+            type="submit"
+            style={{
+              padding: "10px",
+              backgroundColor: "#007bff",
+              color: "#fff",
+              border: "none",
+              borderRadius: "5px",
+              cursor: "pointer",
+              transition: "background-color 0.3s ease",
+            }}
+          >
+            Update Password
+          </button>
+        </form>
+        {response !== null && (
+          <p>
+            {response
+              ? "Password updated successfully"
+              : "Failed to update password. Please try again"}
+          </p>
+        )}
+      </div>
     </div>
   );
 };
