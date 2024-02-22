@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-
+import style from "./Orders.module.css";
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -45,30 +45,43 @@ const Orders = () => {
   };
 
   return (
-    <div>
-      {loading ? (
-        <p>Loading orders...</p>
-      ) : (
-        <div>
-          <h2>All Orders</h2>
-          <ul>
-            {orders.map((order) => (
-              <li key={order.orderID}>
-                <p>Order ID: {order.orderID}</p>
-                <p>Total Price: {order.orderPrice}</p>
-                <p>Ordered On: {order.orderedOn}</p>
-                <button onClick={() => cancelOrder(order.orderID)}>
-                  Cancel Order
-                </button>
-                {/* Link to the '/OrderProducts' route with the order ID as a URL parameter */}
-                <Link to={`/OrderProducts/${order.orderID}`}>
-                  View Order Details
-                </Link>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+    <div className={style.ParentOrder}>
+      <div className={style.ChildOrder}>
+        {loading ? (
+          <p>Loading orders...</p>
+        ) : (
+          <div>
+            <h2>All Orders</h2>
+            <ul>
+              {orders.map((order) => (
+                <li
+                  style={{ liststyletype: "none", padding: "20px" }}
+                  key={order.orderID}
+                >
+                  <p>Order ID: {order.orderID}</p>
+                  <p>Total Price: {order.orderPrice}</p>
+                  <p>Ordered On: {order.orderedOn}</p>
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      marginTop: "20px",
+                    }}
+                  >
+                    <button onClick={() => cancelOrder(order.orderID)}>
+                      Cancel Order
+                    </button>
+                    {/* Link to the '/OrderProducts' route with the order ID as a URL parameter */}
+                    <Link to={`/OrderProducts/${order.orderID}`}>
+                      View Order Details
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
     </div>
   );
 };

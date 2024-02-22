@@ -8,7 +8,7 @@ import PlantFood from "../PlantsFood";
 import ArtificialPlants from "../ArtificialPlants";
 import PumpSpray from "../PumpSpray";
 import PlantCare from "../PlantCare";
-import AboutUs from "../AboutUs";
+// import AboutUs from "../AboutUs";
 import Contact from "../Contact";
 import PlantsDetails from "../PlantDetails";
 import Pebbles from "../Pebbles";
@@ -27,7 +27,11 @@ import ShowProfile from "../SlideBar/ShowProfile";
 import EditAddress from "../SlideBar/EditAddress";
 import Orders from "../SlideBar/Orders";
 import OrderProducts from "../SlideBar/OrderProducts";
-
+import AboutUs from "../Policy/AboutUs";
+import ShippingPolicy from "../Policy/ShippingPolicy";
+import PrivacyPolicy from "../Policy/PrivacyPolicy";
+import RefundPolicy from "../Policy/RefundPolicy";
+import TermsOfService from "../Policy/TermOfService";
 const AllRoutes = () => {
   return (
     <Routes>
@@ -45,6 +49,10 @@ const AllRoutes = () => {
       <Route path="/pebbles" element={<Pebbles />} />
       <Route path="/login" element={<Login />} />
       <Route path="/final" element={<Final />} />
+      <Route path="/sp" element={<ShippingPolicy />} />
+      <Route path="/rp" element={<RefundPolicy />} />
+      <Route path="/tp" element={<TermsOfService />} />
+      <Route path="/pp" element={<PrivacyPolicy />} />
       <Route path="/registration" element={<Registeration />} />
       <Route path="/forgotpassword" element={<ForgetPassword />} />
       <Route path="/otp" element={<Otp />} />
@@ -55,6 +63,7 @@ const AllRoutes = () => {
       <Route path="/paymentgateway" element={<PaymentGateway />} />
       <Route path="/EditAddress" element={<EditAddress />} />
       <Route path="/Orders" element={<Orders />} />
+      {/* <Route path="/aboutus" element={<AboutUs />} /> */}
       <Route path="/OrderProducts/:orderId" element={<OrderProducts />} />
       <Route path="/ShowProfile" element={<ShowProfile />} />
       <Route path="*" element={<PageNotFound />} />

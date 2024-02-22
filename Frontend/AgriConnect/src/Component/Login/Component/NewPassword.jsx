@@ -57,7 +57,9 @@ const NewPassword = () => {
             New Password:
             <input
               type="password"
-              pattern="^(?=.[a-z])(?=.[A-Z])(?=.\d)(?=.[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$"
+              pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&])[A-Za-z\d!@#$%^&]{8,}$"
+              title="Password must contain at least one lowercase letter, one uppercase letter, one digit, one special character, and have a minimum length of 8 characters."
+              required
               value={newPassword}
               onChange={(e) => setNewPassword(e.target.value)}
               style={{

@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import style from "../CSS/PlantDetail.module.css";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
@@ -17,25 +17,66 @@ const PlantsDetails = () => {
   let [data, setData] = useState({});
   let [quantity, setQuantity] = useState(1);
   let [cartObj, setCartObj] = useState(false);
-
+  let { auth } = useContext(ContextApi);
+  let [warning, setWarning] = useState(false);
   let { cart, setCart } = useContext(ContextApi);
-  const handleCart = () => {
-    let isPresent = false;
-    cart.forEach((ele) => {
-      if (ele.pid === data.pid) {
-        isPresent = true;
+  let navigate = useNavigate();
+
+  const handleCart = (element) => {
+    // if (!element || !element.pimages || !element.pprice) {
+    //   console.error("Invalid element or missing properties");
+    //   return;
+    // }
+
+    try {
+      const images = JSON.parse(element.pimages);
+      const price = JSON.parse(element.pprice);
+
+      if (!images || !price || !images.length || !price.length) {
+        console.error("Invalid JSON data for images or price");
+        return;
       }
-    });
-    if (isPresent) {
-      console.log("Product is already present");
-      setCartObj(true);
-      setTimeout(() => {
-        setCartObj(false);
-      }, 2000);
-    } else {
-      data.pquantity = quantity;
-      setCart([data, ...cart]);
-      console.log(cart);
+
+      const productAlreadyInCart = cart.find(
+        (item) => item.pid === element.pid
+      );
+
+      if (productAlreadyInCart) {
+        setWarning(true);
+        setTimeout(() => {
+          setWarning(false);
+        }, 2000);
+      } else {
+        // If the product is not in the cart, proceed to add it
+        const productToAdd = {
+          pid: element.pid,
+          ptitle: element.ptitle,
+          pimage: images[0].IMG1,
+          pprice: price[0].SP,
+          qty: 1,
+        };
+        addProductToCart(productToAdd);
+        setWarning(false); // Reset warning state
+      }
+    } catch (error) {
+      console.error("Error parsing JSON data:", error);
+    }
+  };
+  const addProductToCart = async (product) => {
+    try {
+      const queryString = `?pid=${product.pid}&ptitle=${product.ptitle}&pprice=${product.pprice}&pimage=${product.pimage}&qty=${product.qty}`;
+      const response = await fetch(
+        `http://localhost:8080/Add_TO_Cart${queryString}`
+      );
+
+      if (response.ok) {
+        console.log("Product added to cart successfully");
+        setCart([...cart, product]);
+      } else {
+        console.error("Failed to add product to cart");
+      }
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
     }
   };
   const getSingleData = async () => {
@@ -52,6 +93,13 @@ const PlantsDetails = () => {
   };
   const handleDecrement = () => {
     setQuantity(quantity - 1);
+  };
+  const handleBuyItNow = () => {
+    if (auth) {
+      navigate("/paymentgateway");
+    } else {
+      navigate("/login");
+    }
   };
   return (
     <div id={style.ProductDetailParent}>
@@ -179,18 +227,16 @@ const PlantsDetails = () => {
             </div>
 
             <div className={style.Cart}>
-              <button onClick={handleCart}>Add to Cart</button>
+              <button onClick={() => handleCart(data)}>Add to Cart</button>
             </div>
           </div>
-          {cartObj && (
+          {warning && (
             <div style={{ color: "red" }}>Item already available in cart</div>
           )}
 
-          <NavLink to="/paymentgateway">
-            <button className={style.BuyNow}>
-              <h2>Buy It Now</h2>
-            </button>
-          </NavLink>
+          <button onClick={handleBuyItNow} className={style.BuyNow}>
+            <h2>Buy It Now</h2>
+          </button>
 
           <div className={style.PlantInformation}>
             <div className={style.Infocontainer}>

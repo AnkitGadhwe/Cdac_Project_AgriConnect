@@ -110,8 +110,15 @@ const Cart = () => {
     }
   };
 
-  const handleCheckout = async (auth) => {
+  const handleCheckout = async () => {
+    if (!auth) {
+      // If user is not authenticated, navigate to the login page
+      navigate("/login");
+      return;
+    }
+
     if (!productCart || productCart.length === 0) {
+      // If the cart is empty, display an alert
       alert("Your cart is empty");
       return;
     }
@@ -119,8 +126,6 @@ const Cart = () => {
     try {
       // Call getProductFromCart1 to update productCart state
       await getProductFromCart1();
-      let usert = localStorage.getItem("userid");
-      let token = generateRandomCode(7);
 
       // Prepare data for the query parameters
       const queryParams = new URLSearchParams();
@@ -138,28 +143,27 @@ const Cart = () => {
           )
           .toFixed(2)
       );
-      queryParams.append("uid", usert);
-      queryParams.append("token", token);
+      queryParams.append("uid", localStorage.getItem("userid"));
+      queryParams.append("token", generateRandomCode(7));
 
       // Make GET request with the constructed URL
       const response = await fetch(
         `http://localhost:8080/OrderInsert?${queryParams.toString()}`
       );
 
-      if (response) {
-        if (auth) {
-          navigate("/paymentgateway");
-        } else {
-          navigate("/login");
-        }
+      if (response.ok) {
+        // If the order insertion was successful, navigate to the payment gateway
+        navigate("/paymentgateway");
       } else {
         console.error("Failed to insert order");
+        // Handle error, display message to the user, etc.
       }
     } catch (error) {
       console.error("Failed to add items to cart or navigate:", error);
       // Handle error, display message to the user, etc.
     }
   };
+
   const generateRandomCode = (length) => {
     const characters =
       "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";

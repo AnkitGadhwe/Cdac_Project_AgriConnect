@@ -3,7 +3,7 @@ import Slideshow from "./Slideshow";
 import style from "../CSS/Home.module.css";
 import f2 from "../Images/Feature/f2.png";
 import f6 from "../Images/Feature/f6.png";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { FaCartPlus } from "react-icons/fa";
 import { ContextApi } from "../Context/AgriConnectContext";
 

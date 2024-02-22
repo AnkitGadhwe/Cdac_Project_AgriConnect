@@ -69,51 +69,53 @@ const EditAddress = () => {
   };
 
   return (
-    <div className={style.ChildEdit}>
-      <h1 style={{ marginBottom: "10px" }}>Addresss Page</h1>
-      <form onSubmit={handleSubmit}>
-        <div className={style.FormLabelInput}>
-          <label>Address:</label>
-          <input
-            type="text"
-            name="Address"
-            value={formData.Address}
-            onChange={handleChange}
-            readOnly={!editable} // Disable editing if not in edit mode
-          />
-        </div>
+    <div className={style.ParentAddress}>
+      <div className={style.ChildEdit}>
+        <h1 style={{ marginBottom: "10px" }}>Addresss Page</h1>
+        <form onSubmit={handleSubmit}>
+          <div className={style.FormLabelInput}>
+            <label>Address:</label>
+            <input
+              type="text"
+              name="Address"
+              value={formData.Address}
+              onChange={handleChange}
+              readOnly={!editable} // Disable editing if not in edit mode
+            />
+          </div>
 
-        <div className={style.FormLabelInput}>
-          <label>State:</label>
-          <input
-            type="text"
-            name="Pincode"
-            value={formData.Pincode}
-            onChange={handleChange}
-            readOnly={!editable} // Disable editing if not in edit mode
-          />
-        </div>
+          <div className={style.FormLabelInput}>
+            <label>State:</label>
+            <input
+              type="text"
+              name="Pincode"
+              value={formData.Pincode}
+              onChange={handleChange}
+              readOnly={!editable} // Disable editing if not in edit mode
+            />
+          </div>
 
-        <div className={style.FormLabelInput}>
-          <label>Pincode:</label>
-          <input
-            type="text"
-            name="State"
-            pattern="^\d{6}$"
-            value={formData.State}
-            onChange={handleChange}
-            readOnly={!editable} // Disable editing if not in edit mode
-          />
-        </div>
+          <div className={style.FormLabelInput}>
+            <label>Pincode:</label>
+            <input
+              type="text"
+              name="State"
+              pattern="^\d{6}$"
+              value={formData.State}
+              onChange={handleChange}
+              readOnly={!editable} // Disable editing if not in edit mode
+            />
+          </div>
 
-        {editable && <button type="submit">Submit</button>}
-      </form>
-      <div>
-        <button className={style.button} onClick={() => setEditable(true)}>
-          Edit
-        </button>
+          {editable && <button type="submit">Submit</button>}
+        </form>
+        <div>
+          <button className={style.button} onClick={() => setEditable(true)}>
+            Edit
+          </button>
+        </div>
+        {message && <div>{message}</div>}
       </div>
-      {message && <div>{message}</div>}
     </div>
   );
 };

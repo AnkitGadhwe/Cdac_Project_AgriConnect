@@ -3,7 +3,7 @@ import { useParams } from "react-router";
 import style from "../CSS/PlantDetail.module.css";
 import { Breadcrumb, BreadcrumbItem, BreadcrumbLink } from "@chakra-ui/react";
 import { ChevronRightIcon } from "@chakra-ui/icons";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "react-responsive-carousel/lib/styles/carousel.min.css";
 import { Carousel } from "react-responsive-carousel";
 import { FaStar, FaStarHalfAlt, FaPlus, FaMinus } from "react-icons/fa";
@@ -14,8 +14,8 @@ const PlantsFoodDetails = () => {
   let [data, setData] = useState({});
   let [quantity, setQuantity] = useState(1);
   let [cartObj, setCartObj] = useState(false);
-
-  let { cart, setCart } = useContext(ContextApi);
+  let navigate = useNavigate();
+  let { cart, setCart, auth } = useContext(ContextApi);
 
   const handleCart = () => {
     let isPresent = cart.some((ele) => ele.pfid === data.pfid);
@@ -60,7 +60,14 @@ const PlantsFoodDetails = () => {
       setQuantity(quantity - 1);
     }
   };
-
+  const handleBuyItNow = () => {
+    console.log("cliclked");
+    if (auth) {
+      navigate("/paymentgateway");
+    } else {
+      navigate("/login");
+    }
+  };
   return (
     <div id={style.ProductDetailParent}>
       <Breadcrumb
@@ -160,7 +167,7 @@ const PlantsFoodDetails = () => {
           {cartObj && (
             <div style={{ color: "red" }}>Item already available in cart</div>
           )}
-          <button className={style.BuyNow}>
+          <button onClick={handleBuyItNow} className={style.BuyNow}>
             <h2>Buy It Now</h2>
           </button>
           <div className={style.PlantInformation}>

@@ -33,20 +33,13 @@ const Footer = () => {
         <NavLink className={style.NavLink} to="/potplants">
           PotPlants
         </NavLink>
-        <NavLink className={style.NavLink} to="/seedbulbs">
-          Seeds&Bulbs
-        </NavLink>
+
         <NavLink className={style.NavLink} to="/plantfood">
           PlantsFood
         </NavLink>
-        <NavLink className={style.NavLink} to="/artificialpants">
-          ArtificialPlants
-        </NavLink>
+
         <NavLink className={style.NavLink} to="/pumpspray">
           Pump&Sprays
-        </NavLink>
-        <NavLink className={style.NavLink} to="/plantcare">
-          PlantCare
         </NavLink>
       </section>
 
@@ -60,16 +53,16 @@ const Footer = () => {
         >
           Our Policies
         </h1>
-        <NavLink className={style.NavLink} to="#">
+        <NavLink className={style.NavLink} to="/pp">
           PrivacyPolicy
         </NavLink>
-        <NavLink className={style.NavLink} to="#">
+        <NavLink className={style.NavLink} to="/rp">
           RefundPolicy
         </NavLink>
-        <NavLink className={style.NavLink} to="#">
+        <NavLink className={style.NavLink} to="/tp">
           Terms of Service
         </NavLink>
-        <NavLink className={style.NavLink} to="#">
+        <NavLink className={style.NavLink} to="/sp">
           ShippingPolicy
         </NavLink>
       </section>
@@ -142,7 +135,8 @@ const Footer = () => {
             fontSize={"14"}
             fontWeight={700}
             lineHeight={"21px"}
-            mb={"5"}
+            mb={"15"}
+            color={"black"}
           >
             AgriConnect © 2024. All Rights Reserved
           </Text>
